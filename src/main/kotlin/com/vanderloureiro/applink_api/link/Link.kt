@@ -9,19 +9,14 @@ import java.util.UUID
 
 @Entity
 @Table(name = "link")
-class Link {
-
-    @Id
-    var id: UUID? = null
-
-    var title: String = ""
-
-    var path: String = ""
-
-    var description: String? = null
-
+class Link(
+    var id: UUID? = null,
+    var title: String = "",
+    var path: String = "",
+    var description: String? = null,
     @Column(name = "created_at")
     var createdAt: OffsetDateTime? = null
+) {
 //
 //    @Column(name = "updated_at")
 //    var updatedAt: OffsetDateTime? = null
