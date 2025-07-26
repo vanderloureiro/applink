@@ -1,5 +1,5 @@
 CREATE TABLE link (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY,
     title TEXT NOT NULL,
     path TEXT NOT NULL,
     description TEXT,
