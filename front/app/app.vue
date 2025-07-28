@@ -29,7 +29,7 @@ async function save() {
   key.value = ''
 }
 </script>
-<template>
+<!-- <template>
   <header>
     <div class="header-body">
       <div class="logo">
@@ -77,6 +77,24 @@ async function save() {
         </li>
       </ul>
     </div>
+  </div>
+</template> -->
+<template>
+  <div class="app">
+    <header>
+      <div class="header-body">
+        <div class="logo">
+          <h1>AppLink</h1>
+        </div>
+        <div class="profile">
+          Entrar
+        </div>
+      </div>
+    </header>
+
+    <main class="p-4">
+      <NuxtPage />
+    </main>
   </div>
 </template>
 <style scoped>
