@@ -1,6 +1,34 @@
 <script setup>
 const items = ref([{ message: 'Foo' }, { message: 'Bar' }])
 const contentTwo = ref(["Link1", "Link2", "Link3"])
+
+const title = ref('')
+const url = ref('')
+const description = ref('')
+const key = ref('')
+
+async function save() {
+
+  try {
+    await $fetch('http://localhost:8080/links', {
+      method: 'POST',
+      body: {
+        title: title.value,
+        url: url.value,
+        description: description.value
+      },
+      headers: {
+        'api-key': key.value
+      }
+    })
+  } catch (error) {
+    console.log(error)
+  }
+  title.value = ''
+  url.value = ''
+  description.value = ''
+  key.value = ''
+}
 </script>
 <template>
   <header>
@@ -15,25 +43,25 @@ const contentTwo = ref(["Link1", "Link2", "Link3"])
   </header>
   <div class="content">
     <div class="save-form">
-      <form action="#" method="post">
+      <form @submit.prevent="save" method="post">
         <div class="field">
           <label for="title">Título <small>*</small></label><br>
-          <input type="text" name="title" id="titulo" required>
+          <input v-model="title" type="text" name="title" id="titulo" required>
         </div>
         <div class="field">
-          <label for="link">URL <small>*</small></label><br>
-          <input type="url" name="link" id="link" required>
+          <label for="url">URL <small>*</small></label><br>
+          <input v-model="url" type="text" name="url" id="url" required>
         </div>
         <div class="field">
           <label for="description">Descrição</label><br>
-          <textarea name="description" id="description"></textarea>
+          <textarea v-model="description" name="description" id="description"></textarea>
         </div>
         <div class="field">
           <label for="key">Key *</label><br>
-          <input type="password" name="key" id="key" required>
+          <input v-model="key" type="password" name="key" id="key" required>
         </div>
         <div class="field btn-save">
-          <input type="button" value="Salvar">
+          <button>Salvar</button>
         </div>
       
       </form>
