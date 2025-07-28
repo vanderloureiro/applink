@@ -6,6 +6,6 @@ import java.util.UUID
 data class LinkResponse(
     val id: UUID,
     val title: String,
-    val path: String,
+    val url: String,
     val description: String?,
     val createdAt: OffsetDateTime)

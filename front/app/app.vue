@@ -1,6 +1,5 @@
 <script setup>
-const items = ref([{ message: 'Foo' }, { message: 'Bar' }])
-const contentTwo = ref(["Link1", "Link2", "Link3"])
+const { data: links, error, pending } = await useFetch('http://localhost:8080/links')
 
 const title = ref('')
 const url = ref('')
@@ -69,8 +68,12 @@ async function save() {
     <div class="link-list">
       <h4>Salvos</h4>
       <ul>
-        <li v-for="linkbody in contentTwo">
-          Link: {{ linkbody }}
+        <li v-for="link in links">
+          Título: {{ link.title }} <br>
+          Link: {{ link.url }} <br>
+          Descrição: {{ link.description }} <br>
+          Data: {{ link.createdAt }}
+          <hr>
         </li>
       </ul>
     </div>

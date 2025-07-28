@@ -30,7 +30,7 @@ class LinkController(val linkRepository: LinkRepository) {
             LinkResponse(
                 id = item.id!!,
                 title = item.title,
-                path = item.path,
+                url = item.path,
                 description = item.description,
                 createdAt = item.createdAt!!
             )
