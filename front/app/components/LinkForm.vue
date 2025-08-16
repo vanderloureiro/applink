@@ -44,12 +44,12 @@ async function handleSubmit() {
 <style scoped>
 .save-form {
   margin: 5% 20%;
-  background-color: rgb(149, 202, 149);
+  background-color: #fff;
   border-radius: 15px;
   padding: 1%;
 }
 .field input, textarea {
-  background-color: rgb(149, 202, 149);
+  background-color: #fff;
 }
 .btn-save {
   display: flex;

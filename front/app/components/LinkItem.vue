@@ -9,6 +9,14 @@ const props = defineProps<{ link: Link }>()
       {{ props.link.title }}
     </a>
     <p class="text-sm text-gray-600">{{ props.link.description }}</p>
-    <hr>
   </li>
 </template>
+<style>
+li {
+  background-color: #fff;
+  padding: 1em;
+  border-radius: 15px;
+  margin-bottom: 1em;
+  list-style-type: none;
+}
+</style>
