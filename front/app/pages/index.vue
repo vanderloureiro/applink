@@ -1,8 +1,10 @@
 <script setup lang="ts">
-const linkStore = useLinks()
+import { linkStore } from '@/stores/linkStore'
+
+const store = linkStore()
 
 onMounted(() => {
-  linkStore.fetchLinks()
+  store.fetchLinks()
 })
 </script>
 

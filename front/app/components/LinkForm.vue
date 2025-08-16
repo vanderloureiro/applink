@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useLinks } from '@/composables/useLinks'
+import { linkStore } from '@/stores/linkStore'
 
-const { addLink } = useLinks()
+const store = linkStore()
 
 const form = reactive({ title: '', url: '', description: '', key: '' })
 const sending = ref(false)
 
 async function handleSubmit() {
   sending.value = true
-  await addLink({ ...form })
+  await store.addLink({ ...form })
   Object.assign(form, { title: '', url: '', description: '', key: '' })
   sending.value = false
 }

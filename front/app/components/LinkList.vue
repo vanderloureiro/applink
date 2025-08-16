@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { useLinks } from '@/composables/useLinks'
-const { links } = useLinks()
+import { linkStore } from '@/stores/linkStore'
+
+const store = linkStore()
+onMounted(() => {
+  store.fetchLinks()
+})
 </script>
 
 <template>
@@ -8,7 +12,7 @@ const { links } = useLinks()
     <p v-if="false">Carregando…</p>
     <!-- <p v-else-if="error">{{ error }}</p> -->
     <ul v-else>
-      <LinkItem v-for="l in links" :key="l.id" :link="l" />
+      <LinkItem v-for="l in store.links" :key="l.id" :link="l" />
     </ul>
   </div>
 </template>
