@@ -25,4 +25,7 @@
   margin: 0 15%;
   align-items: center;
 }
+.header-body h1 {
+  color: #19a311cf;
+}
 </style>
