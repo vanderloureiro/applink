@@ -1,4 +1,4 @@
-CREATE TABLE link (
+CREATE TABLE links (
     id UUID PRIMARY KEY,
     title TEXT NOT NULL,
     path TEXT NOT NULL,
