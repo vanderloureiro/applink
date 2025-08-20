@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { Link } from '@/types/link'
+import type { Link } from '~/types/Link'
 
 export const linkStore = defineStore('links', {
   state: () => ({

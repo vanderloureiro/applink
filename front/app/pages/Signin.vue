@@ -26,10 +26,12 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const email = ref('');
 const code = ref('');
 const emailSent = ref(false);
+const router = useRouter();
 
 function sendEmail() {
   if (email.value) {
@@ -45,7 +47,7 @@ function verifyCode() {
   if (code.value.length === 6) {
     // Simulate verifying code
     console.log(`Code entered: ${code.value}`);
-    alert('Code verified successfully!');
+    router.push('/'); // Redirect to home page
   } else {
     alert('Please enter a valid 6-digit code.');
   }
