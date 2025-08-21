@@ -7,25 +7,24 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/links")
 @CrossOrigin(origins = ["http://localhost:3000"])
-class LinkController(val linkRepository: LinkRepository) {
+class LinkController(private val linkService: LinkService) {
 
     @PostMapping
-    fun create(@RequestBody request: CreateLinkRequest, @RequestHeader("api-key") apiKey: String): ResponseEntity<Void> {
+    fun create(@RequestBody request: CreateLinkRequest): ResponseEntity<Void> {
         val link = request.toDomain()
-        this.linkRepository.save(link)
+        this.linkService.create(link)
         return ResponseEntity.noContent().build()
     }
 
     @GetMapping
     fun get(): List<LinkResponse> {
-        val links = this.linkRepository.findAll()
+        val links = this.linkService.get()
         return links.map { item ->
             LinkResponse(
                 id = item.id!!,
