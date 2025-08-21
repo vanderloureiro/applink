@@ -7,7 +7,7 @@ data class CreateLinkRequest(val title: String,
                              val url: String,
                              val description: String?) {
 
-    fun toModel(): Link {
+    fun toDomain(): Link {
         return Link(title = this.title, path = this.url, description = this.description, owner = User(name = "Test", email = "test@email"))
     }
 }

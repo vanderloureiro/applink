@@ -18,7 +18,7 @@ class LinkController(val linkRepository: LinkRepository) {
 
     @PostMapping
     fun create(@RequestBody request: CreateLinkRequest, @RequestHeader("api-key") apiKey: String): ResponseEntity<Void> {
-        val link = request.toModel()
+        val link = request.toDomain()
         this.linkRepository.save(link)
         return ResponseEntity.noContent().build()
     }

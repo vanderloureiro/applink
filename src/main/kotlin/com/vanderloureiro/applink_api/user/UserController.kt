@@ -1,0 +1,31 @@
+package com.vanderloureiro.applink_api.user
+
+import com.vanderloureiro.applink_api.user.dto.CreateUserRequest
+import com.vanderloureiro.applink_api.user.dto.UserResponse
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
+
+@RestController
+@RequestMapping("/api/users")
+@CrossOrigin(origins = ["http://localhost:3000"])
+class UserController(val userService: UserService) {
+
+    @PostMapping
+    fun create(@RequestBody request: CreateUserRequest): ResponseEntity<Void> {
+        userService.create(request.toDomain())
+        return ResponseEntity.noContent().build()
+    }
+
+    @GetMapping("/{id}")
+    fun get(@PathVariable id: UUID): ResponseEntity<UserResponse> {
+        val response = UserResponse.fromDomain(userService.get(id))
+        return ResponseEntity.ok(response)
+    }
+}
