@@ -11,6 +11,10 @@ final class UserService(private val userRepository: UserRepository) {
         return user.orElseThrow()
     }
 
+    fun getByEmail(email: String): User {
+        return userRepository.findByEmail(email).orElseThrow()
+    }
+
     fun create(user: User) {
         user.name = user.email.split('@')[0]
         user.isValidatedEmail = false
