@@ -13,5 +13,5 @@ interface AuthCodeRepository : JpaRepository<AuthCode, UUID> {
         value = "SELECT * FROM auth_code WHERE user_id = :userId AND code = :code AND created_at >= NOW() - INTERVAL '4 HOUR'",
         nativeQuery = true
     )
-    fun getValidAuthCode(@Param("userId") userId: UUID, @Param("code") code: String): AuthCode?
+    fun getValidAuthCode(@Param("userId") userId: Long, @Param("code") code: String): AuthCode?
 }

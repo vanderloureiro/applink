@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>LinkSaver - Your Personal Link Repository</title>
+<link href="data:image/x-icon;base64," rel="icon" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+      :root {
+        --primary-green: #17cf17;
+        --light-gray: #f5f5f5;
+        --medium-gray: #e5e7eb;
+        --dark-gray: #6b7280;
+        --text-color: #1f2937;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--light-gray);
+        color: var(--text-color);
+      }
+      .btn-primary {
+        @apply bg-[var(--primary-green)] text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300;
+      }
+      .input-field {
+        @apply w-full bg-white border border-[var(--medium-gray)] rounded-lg px-4 py-3 focus:ring-2 focus:ring-[var(--primary-green)] focus:border-transparent transition-colors duration-300;
+      }
+      .card {
+        @apply bg-white rounded-xl shadow-sm p-6 transition-shadow duration-300 hover:shadow-md;
+      }
+    </style>
+</head>
+<body>
+<div class="flex flex-col min-h-screen">
+<header class="bg-white shadow-sm sticky top-0 z-10">
+<nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+<div class="flex items-center gap-6">
+<a class="flex items-center gap-2 text-xl font-bold text-[var(--text-color)]" href="#">
+<svg class="text-[var(--primary-green)] size-8" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
+</svg>
+<span>LinkSaver</span>
+</a>
+<div class="hidden md:flex items-center gap-6 text-sm font-medium text-[var(--dark-gray)]">
+<a class="hover:text-[var(--primary-green)] transition-colors" href="#">Home</a>
+<a class="hover:text-[var(--primary-green)] transition-colors" href="#">Collections</a>
+<a class="hover:text-[var(--primary-green)] transition-colors" href="#">Tags</a>
+<a class="hover:text-[var(--primary-green)] transition-colors" href="#">Archive</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<input class="bg-[var(--light-gray)] rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-[var(--primary-green)] focus:outline-none transition-all duration-300 w-48 lg:w-64" placeholder="Search..." type="search"/>
+<svg class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--dark-gray)]" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+<path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+</svg>
+</div>
+<button class="text-[var(--dark-gray)] hover:text-[var(--primary-green)] transition-colors">
+<svg fill="currentColor" height="24" viewBox="0 0 256 256" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"></path>
+</svg>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJlUgyPZbko-qkf3KE4RdOBT1lKgL2eXCxnsah6t_3HjHpTnXXFNsQjLP0cxnzw9F30vR1p2fz-cKvRgSR2IKBLSL-dz2IwTIYwXH415MD5LX_GTvXwMJ6onG2avNoDM6HZMZU3EmjEDninj5-OzqR07TRs7uI4ugEHXXsQGM_kUjlBczcuxOTngSc3ZtzLqCDfrdOTXlFy7ysBQ4oV9SOOnzJapxfwXL5JvdEZFpXMgMw4hVcn1o1qcHDuMFDOxPwWqSlqqZyziY");'></div>
+</div>
+</nav>
+</header>
+<main class="container mx-auto px-6 py-8 flex-grow">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-1">
+<div class="card space-y-6">
+<h2 class="text-xl font-bold">Add a New Link</h2>
+<form class="space-y-4">
+<div>
+<label class="block text-sm font-medium mb-1" for="url">URL</label>
+<input class="input-field" id="url" name="url" placeholder="https://example.com" required="" type="url"/>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1" for="title">Title</label>
+<input class="input-field" id="title" name="title" placeholder="Give your link a title" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1" for="description">Description</label>
+<textarea class="input-field" id="description" name="description" placeholder="Add a short description" rows="3"></textarea>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1" for="tags">Tags (comma-separated)</label>
+<input class="input-field" id="tags" name="tags" placeholder="e.g., productivity, design, tech" type="text"/>
+</div>
+<button class="btn-primary w-full" type="submit">Save Link</button>
+</form>
+</div>
+</div>
+<div class="lg:col-span-2">
+<div class="mb-6">
+<div class="relative">
+<input class="input-field w-full pl-10" placeholder="Search your saved links..." type="search"/>
+<svg class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+<path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+</svg>
+</div>
+</div>
+<div class="space-y-6">
+<article class="card flex flex-col sm:flex-row items-start gap-6">
+<div class="flex-grow">
+<h3 class="text-lg font-bold mb-1">The Ultimate Guide to Productivity</h3>
+<a class="text-sm text-[var(--primary-green)] hover:underline break-all" href="#">https://example.com/ultimate-guide-productivity</a>
+<p class="text-[var(--dark-gray)] text-sm mt-2">A comprehensive guide to boosting your productivity with proven techniques and tools.</p>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">productivity</span>
+<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">self-help</span>
+</div>
+</div>
+<div class="w-full sm:w-48 h-32 flex-shrink-0">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLBYM6KBQxeoYn_NUVAMl8Pf0KhkXkjOwAc3Xi62vMpbgYXnTbxzp9FkOzZWpMXpZLc-WkHmCERvkkynDj0N_3O-24YvF_s1DHEcHGGN3lmWnIPOxdoAibIgHU_tQnUftPO3hjdwOS6H8fHKIdtfz_1J7bIqDBALvVVJ8CfiKgGxYth9vLxmeLDw9WnznwFKSEkhTetfXMkCr5TINwOUotTixOcqTnsbtCefs7g7dXv5Z1mg0BGD7oXq_uGOaEK8cDrQUS5ImRgkA");'></div>
+</div>
+</article>
+<article class="card flex flex-col sm:flex-row items-start gap-6">
+<div class="flex-grow">
+<h3 class="text-lg font-bold mb-1">Mastering Time Management</h3>
+<a class="text-sm text-[var(--primary-green)] hover:underline break-all" href="#">https://example.com/mastering-time-management</a>
+<p class="text-[var(--dark-gray)] text-sm mt-2">Learn how to effectively manage your time and prioritize tasks for maximum efficiency.</p>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">time management</span>
+<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">work</span>
+</div>
+</div>
+<div class="w-full sm:w-48 h-32 flex-shrink-0">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAf1UUOFLykIfV5e8s-teO5fuw0Ba6mk0EDuPj7-8NsfpU2sdkGH7SB3d5vvzAbQ2RVpIs383_BC5dNuE5TvFxw17-jo-EeVKKddNXoChp3oWbiB4y2dQi1OyQrCEY2guO1-HH6DjdJFyQ5Ir9iKq43A4BDZrXmRJJ1KxS3-XCXvpDXtaet8zUEEr1-uS829gK0Ujl7gy7CzD7oc5MkoNG6jemryX4mCUaTkUb3pogC6fWEnRzG-lnh0_ivY-FhcToon-3SjVhVFvQ");'></div>
+</div>
+</article>
+<article class="card flex flex-col sm:flex-row items-start gap-6">
+<div class="flex-grow">
+<h3 class="text-lg font-bold mb-1">The Art of Focus</h3>
+<a class="text-sm text-[var(--primary-green)] hover:underline break-all" href="#">https://example.com/art-of-focus</a>
+<p class="text-[var(--dark-gray)] text-sm mt-2">Discover strategies to improve your focus and eliminate distractions in your daily life.</p>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">focus</span>
+<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">mindfulness</span>
+</div>
+</div>
+<div class="w-full sm:w-48 h-32 flex-shrink-0">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover rounded-lg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCOh6-4Ayg7Pajt5H0nQlXPN0YQB8kJtzwiODN-6b-VSgUaMT2VtZNSW5Jv_8Xiwp070fdLvqnytiW6vwugvUVzFH524HtL2S6Zw_jLRFYXpK1vhfXdQB0Y80LgNbQNefGdNfD3OgK81EsIpW9o_A3S32eGa8buQxCBMcFIK5b7fnhV_q2Zn7rqna15vpGwzMSUvA0VqJcLaZ_8MbXolBZlEYWk9CHk0x5_yWzQhHTrsg9bjLPL4mv8uj349ZD0871leMTzIUnOuSU");'></div>
+</div>
+</article>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-white mt-8 py-4">
+<div class="container mx-auto px-6 text-center text-sm text-[var(--dark-gray)]">
+<p>© 2024 LinkSaver. All rights reserved.</p>
+</div>
+</footer>
+</div>
+
+</body></html>
