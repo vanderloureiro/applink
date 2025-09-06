@@ -9,7 +9,7 @@ import java.time.OffsetDateTime
 import java.util.UUID
 
 @Entity
-@Table(name = "authcode")
+@Table(name = "auth_code")
 data class AuthCode(
     @Id
     @Column(name = "user_id", unique = true)
