@@ -17,9 +17,6 @@ onMounted(() => {
   </div>
 </template>
 <style scoped>
-.link-list {
-  margin: 0 20%;
-}
 ul {
   padding-inline-start: 0;
 }

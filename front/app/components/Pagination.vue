@@ -65,8 +65,7 @@ function changePage(page) {
   padding: 10px 15px;
   border: none;
   border-radius: 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: #fff;
   cursor: pointer;
   font-size: 14px;
 }
@@ -75,7 +74,7 @@ function changePage(page) {
   cursor: not-allowed;
 }
 .pagination-button.active {
-  background-color: #0056b3;
+  background-color: #cccccc;
   font-weight: bold;
 }
 </style>

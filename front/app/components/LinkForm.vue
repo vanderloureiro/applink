@@ -17,6 +17,7 @@ async function handleSubmit() {
 
 <template>
   <div class="save-form">
+    <h2>Salve um novo link</h2>
       <form @submit.prevent="handleSubmit" method="post">
         <div class="field">
           <label for="title">Título <small>*</small></label><br>
@@ -34,25 +35,42 @@ async function handleSubmit() {
           <label for="key">Key *</label><br>
           <input v-model="form.key" type="password" name="key" id="key" required>
         </div>
-        <div class="field btn-save">
-          <button :disabled="sending">Salvar</button>
-        </div>
+        <button class="btn button-primary btn-save" :disabled="sending">Salvar</button>
       
       </form>
     </div>
 </template>
 <style scoped>
 .save-form {
-  margin: 5% 20%;
   background-color: #fff;
-  border-radius: 15px;
-  padding: 1%;
+  border-radius: 0.75rem;;
+  padding: 1.5rem;
+}
+.btn-save {
+  width: 100%;
+}
+h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-bottom: 1em;
 }
 .field input, textarea {
   background-color: #fff;
+  border-color: #e5e7eb;
+  border-width: 1px;
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 0.375rem;
+  font-family: 'Inter', sans-serif;
+  margin-top: 0.25em;
+  margin-bottom: 1em;
+  font-weight: 500;
+  font-size: 0.875rem;
 }
-.btn-save {
-  display: flex;
-  justify-content: end;
+label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  line-height: 1.25rem;
 }
 </style>

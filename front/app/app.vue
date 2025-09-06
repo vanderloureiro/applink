@@ -4,8 +4,9 @@ import Footer from './components/Footer.vue';
 </script>
 <template>
   <div class="app">
-    <header>
-      <div class="header-body">
+    <div class="container">
+      <header>
+      <div class="d-flex justify-content-between align-items-center p-3">
         <div class="logo">
           <nuxt-link to="/">
           <h1>AppLink</h1>
@@ -22,26 +23,15 @@ import Footer from './components/Footer.vue';
     <main>
       <NuxtPage />
     </main>
+    </div>
     <Footer></Footer>
   </div>
 </template>
 <style scoped>
-.app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-.header-body {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 15%;
-  align-items: center;
-}
-.header-body h1 {
+.logo h1 {
   color: #19a311cf;
-}
-main {
-  flex: 1;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
 }
 a {
   text-decoration: none;

@@ -15,10 +15,14 @@ function handlePageChange(page: any) {
 </script>
 
 <template>
-  <div class="index-page">
-    <link-form></link-form>
-    <link-list></link-list>
-    <Pagination :totalPages="totalPages" @page-change="handlePageChange" />
+  <div class="row">
+    <div class="col-4 col-md-4">
+      <link-form></link-form>
+    </div>
+    <div class="col-8 col-md-8">
+      <link-list></link-list>
+      <Pagination :totalPages="totalPages" @page-change="handlePageChange" />
+    </div>
   </div>
 </template>
 
