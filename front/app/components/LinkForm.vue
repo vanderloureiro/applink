@@ -20,20 +20,16 @@ async function handleSubmit() {
     <h2>Salve um novo link</h2>
       <form @submit.prevent="handleSubmit" method="post">
         <div class="field">
-          <label for="title">Título <small>*</small></label><br>
-          <input v-model="form.title" type="text" name="title" id="titulo" required>
+          <label for="url">URL</label><br>
+          <input v-model="form.url" type="text" name="url" id="url" placeholder="https://exemplo.com.br" required>
         </div>
         <div class="field">
-          <label for="url">URL <small>*</small></label><br>
-          <input v-model="form.url" type="text" name="url" id="url" required>
+          <label for="title">Título</label><br>
+          <input v-model="form.title" type="text" name="title" id="titulo" placeholder="Dê um nome ao link" required>
         </div>
         <div class="field">
           <label for="description">Descrição</label><br>
-          <textarea v-model="form.description" name="description" id="description"></textarea>
-        </div>
-        <div class="field">
-          <label for="key">Key *</label><br>
-          <input v-model="form.key" type="password" name="key" id="key" required>
+          <textarea v-model="form.description" name="description" id="description" placeholder="Uma descrição curta"></textarea>
         </div>
         <button class="btn button-primary btn-save" :disabled="sending">Salvar</button>
       

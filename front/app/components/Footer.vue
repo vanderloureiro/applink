@@ -5,11 +5,12 @@
 </template>
 <style scoped>
 .footer {
-    margin-top: 5em;
     text-align: center;
     padding: 1em 0;
-    background-color: #19a311cf;
-    color: white;
+    background-color: #fff;
+    color: #6b7280;
     width: 100%;
+    font-size: 0.875rem;
+    text-align: center;
 }
 </style>

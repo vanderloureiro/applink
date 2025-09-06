@@ -1,39 +1,29 @@
 <script setup>
+import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 
 </script>
 <template>
   <div class="app">
-    <div class="container">
-      <header>
-      <div class="d-flex justify-content-between align-items-center p-3">
-        <div class="logo">
-          <nuxt-link to="/">
-          <h1>AppLink</h1>
-        </nuxt-link>
-        </div>
-        <div class="profile">
-          <nuxt-link to="/signin">
-            <span>Entrar</span>
-          </nuxt-link>
-        </div>
-      </div>
-    </header>
-
-    <main>
-      <NuxtPage />
-    </main>
+    <Header></Header>
+    <div class="container app-content">
+      <main>
+        <NuxtPage />
+      </main>
     </div>
     <Footer></Footer>
   </div>
 </template>
 <style scoped>
-.logo h1 {
-  color: #19a311cf;
-  font-weight: 700;
-  font-family: 'Inter', sans-serif;
+.app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-a {
-  text-decoration: none;
+.app-content {
+  flex: 1;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 </style>
