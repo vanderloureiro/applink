@@ -9,13 +9,13 @@ import java.time.OffsetDateTime
 import java.util.UUID
 
 @Entity
-@Table(name = "auth_code")
-class AuthCode(
+@Table(name = "authcode")
+data class AuthCode(
     @Id
     @Column(name = "user_id", unique = true)
     var userId: UUID,
     var code: String,
-    @Column(name = "created_at")
+    @Column(name = "updated_at")
     @CreationTimestamp
-    var createdAt: OffsetDateTime? = null
+    var updatedAt: OffsetDateTime? = null
 )

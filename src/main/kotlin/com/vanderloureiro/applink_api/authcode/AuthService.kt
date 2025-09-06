@@ -2,12 +2,16 @@ package com.vanderloureiro.applink_api.authcode
 
 import com.vanderloureiro.applink_api.user.UserService
 import com.vanderloureiro.applink_api.authcode.dto.ValidateAuthCodeRequest
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
+import java.time.OffsetDateTime
 import java.util.UUID
 import java.util.random.RandomGenerator
 
 @Service
 class AuthService(private val repository: AuthCodeRepository, private val userService: UserService) {
+
+    private val logger = KotlinLogging.logger {}
 
     fun generate(email: String) {
         val user = userService.getByEmail(email)
@@ -17,9 +21,9 @@ class AuthService(private val repository: AuthCodeRepository, private val userSe
     fun generate(userId: UUID) {
         val code = RandomGenerator.getDefault().nextInt(100000, 999999).toString()
         val user = userService.get(userId)
-        val authCode = AuthCode(userId = userId, code)
+        val authCode = AuthCode(userId = userId, code, updatedAt = OffsetDateTime.now())
         repository.save(authCode)
-
+        logger.info { authCode.toString() }
         // sendMail(user, code)
     }
 
