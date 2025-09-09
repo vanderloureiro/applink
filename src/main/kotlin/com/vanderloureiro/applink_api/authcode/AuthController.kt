@@ -2,6 +2,8 @@ package com.vanderloureiro.applink_api.authcode
 
 import com.vanderloureiro.applink_api.authcode.dto.SignInRequest
 import com.vanderloureiro.applink_api.authcode.dto.ValidateAuthCodeRequest
+import io.swagger.v3.oas.annotations.tags.Tag
+import io.swagger.v3.oas.annotations.tags.Tags
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = ["http://localhost:3000"])
+@Tags(Tag(name = "Auth", description = "Auth resource"))
 class AuthController(private val authService: AuthService) {
 
 
