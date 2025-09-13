@@ -5,6 +5,8 @@ import com.vanderloureiro.applink_api.user.dto.UserResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.tags.Tags
+import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -31,7 +33,8 @@ class UserController(val userService: UserService) {
     @ApiResponse(description = "Finds an user by your id")
     @GetMapping("/{id}")
     fun get(@PathVariable id: UUID): ResponseEntity<UserResponse> {
-        val response = UserResponse.fromDomain(userService.get(id))
+        val user = userService.get(id) ?: return ResponseEntity.notFound().build()
+        val response = UserResponse.fromDomain(user)
         return ResponseEntity.ok(response)
     }
 }

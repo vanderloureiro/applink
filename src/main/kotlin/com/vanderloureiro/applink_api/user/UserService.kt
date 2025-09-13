@@ -2,17 +2,15 @@ package com.vanderloureiro.applink_api.user
 
 import org.springframework.stereotype.Service
 import java.util.UUID
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 final class UserService(private val userRepository: UserRepository) {
 
-    fun get(id: UUID): User {
-        val user = this.userRepository.findById(id)
-        return user.orElseThrow()
-    }
+    fun get(id: UUID): User? = this.userRepository.findById(id).getOrNull()
 
-    fun getByEmail(email: String): User {
-        return userRepository.findByEmail(email).orElseThrow()
+    fun getByEmail(email: String): User? {
+        return userRepository.findByEmail(email)
     }
 
     fun create(user: User) {
