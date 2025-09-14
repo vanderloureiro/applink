@@ -2,6 +2,7 @@ package com.vanderloureiro.applink_api.authcode
 
 import com.vanderloureiro.applink_api.authcode.dto.ValidateAuthCodeRequest
 import com.vanderloureiro.applink_api.user.UserService
+import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -21,8 +22,9 @@ class AuthService(
 
     private val logger = KotlinLogging.logger {}
 
+    // [Refatorar] Preciso abrir o método pra entender regra de negócio e validação
     fun generate(email: String) {
-        val user = userService.getByEmail(email)
+        val user = userService.getByEmail(email) ?: throw UserNotFoundException()
         generate(user?.id!!)
     }
 
