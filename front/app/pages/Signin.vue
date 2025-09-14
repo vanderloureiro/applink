@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const email = ref('');
@@ -33,21 +33,54 @@ const code = ref('');
 const emailSent = ref(false);
 const router = useRouter();
 
-function sendEmail() {
+async function sendEmail() {
   if (email.value) {
-    // Simulate sending email
-    console.log(`Email sent to: ${email.value}`);
-    emailSent.value = true;
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/sign-in', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email.value }),
+      });
+
+      if (response.ok) {
+        console.log('Email sent successfully:', email.value);
+        emailSent.value = true;
+      } else {
+        console.error('Failed to send email. Status:', response.status);
+      }
+    } catch (error) {
+      console.error('Error occurred while sending email:', error);
+    }
   } else {
     alert('Please enter a valid email.');
   }
 }
 
-function verifyCode() {
+async function verifyCode() {
   if (code.value.length === 6) {
-    // Simulate verifying code
-    console.log(`Code entered: ${code.value}`);
-    router.push('/'); // Redirect to home page
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/validate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email.value, code: code.value }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const token = data.token;
+        localStorage.setItem('authToken', token); // Save token in localStorage
+        console.log('Code validated successfully and token saved:', token);
+        router.push('/'); // Redirect to home page
+      } else {
+        console.error('Failed to validate code. Status:', response.status);
+      }
+    } catch (error) {
+      console.error('Error occurred while validating code:', error);
+    }
   } else {
     alert('Please enter a valid 6-digit code.');
   }

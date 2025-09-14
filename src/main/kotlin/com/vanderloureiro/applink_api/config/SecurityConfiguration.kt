@@ -24,7 +24,7 @@ class SecurityConfiguration(
         http
             .csrf { it.disable() }
             .authorizeHttpRequests {
-                it
+                it.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/v3/api-docs/**").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/api/auth/**").permitAll()

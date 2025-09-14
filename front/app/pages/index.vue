@@ -10,6 +10,7 @@ onMounted(() => {
 });
 
 function handlePageChange(page: any) {
+  store.fetchLinks();
   console.log(`Page changed to: ${page}`);
 }
 </script>

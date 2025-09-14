@@ -2,6 +2,7 @@ package com.vanderloureiro.applink_api.authcode
 
 import com.vanderloureiro.applink_api.authcode.dto.SignInRequest
 import com.vanderloureiro.applink_api.authcode.dto.ValidateAuthCodeRequest
+import com.vanderloureiro.applink_api.authcode.dto.ValidateResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.tags.Tags
 import org.springframework.http.HttpStatus
@@ -26,11 +27,11 @@ class AuthController(private val authService: AuthService) {
     }
 
     @PostMapping("/validate")
-    fun validate(@RequestBody req: ValidateAuthCodeRequest): ResponseEntity<String> {
+    fun validate(@RequestBody req: ValidateAuthCodeRequest): ResponseEntity<ValidateResponse> {
         val token = authService.validate(req)
             ?: return ResponseEntity.status(HttpStatusCode.valueOf(HttpStatus.UNAUTHORIZED.value()))
-                .body("Unauthorized")
+                .build()
 
-        return ResponseEntity.ok(token)
+        return ResponseEntity.ok(ValidateResponse(token))
     }
 }
