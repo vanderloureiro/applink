@@ -13,7 +13,7 @@ export const linkStore = defineStore('links', {
         this.links = res;
       } catch (error) {
         console.error('Error fetching links:', error);
-        throw error; // Repropaga o erro para que ele seja tratado no chamador
+        throw error;
       }
     },
 
@@ -23,13 +23,13 @@ export const linkStore = defineStore('links', {
           method: 'POST',
           body: link,
           headers: {
-            'api-key': link.key
+            'Content-Type': 'application/json'
           }
         });
         await this.fetchLinks(); // atualiza a lista
       } catch (error) {
         console.error('Error adding link:', error);
-        throw error; // Repropaga o erro para que ele seja tratado no chamador
+        throw error;
       }
     }
   }

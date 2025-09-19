@@ -29,7 +29,6 @@ class SecurityConfiguration(
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                    .requestMatchers("/api/users**").hasRole("ADMIN")
                     .anyRequest().fullyAuthenticated()
             }
             .sessionManagement {

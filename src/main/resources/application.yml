@@ -2,6 +2,13 @@ spring:
   application:
     name: applink-api
 
+  web:
+    cors:
+      allowed-origin-patterns: "*"
+      allowed-headers: "*"
+      allowed-methods: "*"
+      allow-credentials: true
+
   datasource:
     url: jdbc:postgresql://localhost:5432/applink
     username: ${DB_USER}

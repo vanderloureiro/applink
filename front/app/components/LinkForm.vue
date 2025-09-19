@@ -3,13 +3,13 @@ import { linkStore } from '@/stores/linkStore'
 
 const store = linkStore()
 
-const form = reactive({ title: '', url: '', description: '', key: '' })
+const form = reactive({ title: '', url: '', description: '' })
 const sending = ref(false)
 
 async function handleSubmit() {
   sending.value = true
   await store.addLink({ ...form })
-  Object.assign(form, { title: '', url: '', description: '', key: '' })
+  Object.assign(form, { title: '', url: '', description: '' })
   sending.value = false
 }
 </script>
