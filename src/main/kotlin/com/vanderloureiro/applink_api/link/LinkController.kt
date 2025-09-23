@@ -4,6 +4,9 @@ import com.vanderloureiro.applink_api.link.dto.CreateLinkRequest
 import com.vanderloureiro.applink_api.link.dto.LinkResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.tags.Tags
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,8 +29,8 @@ class LinkController(private val linkService: LinkService) {
     }
 
     @GetMapping
-    fun get(): List<LinkResponse> {
-        val links = this.linkService.get()
+    fun get(query: String = "", @PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) pageable: Pageable): List<LinkResponse> {
+        val links = this.linkService.get(query, pageable)
         return links.map { item ->
             LinkResponse(
                 id = item.id!!,
