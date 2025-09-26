@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { linkStore } from '@/stores/linkStore'
+import type { Link } from '~/types/Link';
 
-const store = linkStore()
-onMounted(() => {
-  store.fetchLinks()
-})
+const props = defineProps({
+  links: {
+    type: Array as () => Link[],
+    required: true,
+  },
+});
 </script>
 
 <template>
@@ -12,12 +14,13 @@ onMounted(() => {
     <p v-if="false">Carregando…</p>
     <!-- <p v-else-if="error">{{ error }}</p> -->
     <ul v-else>
-      <LinkItem v-for="l in store.links" :key="l.id" :link="l" />
+      <LinkItem v-for="link in links" :key="link.id" :link="link" />
     </ul>
   </div>
 </template>
+
 <style scoped>
-ul {
+.link-list ul {
   padding-inline-start: 0;
 }
 </style>

@@ -1,17 +1,27 @@
 <script setup lang="ts">
 import { linkStore } from '@/stores/linkStore';
 import Pagination from '@/components/Pagination.vue';
+import { ref, computed, onMounted } from 'vue';
 
 const store = linkStore();
-const totalPages = 10; // Example dynamic value, can be fetched or computed
+const totalPages = ref(10); // Exemplo de valor dinâmico
+const searchQuery = ref('');
+
+const links = computed(() => store.links); // Computed para refletir os dados da store
 
 onMounted(() => {
   store.fetchLinks();
 });
 
-function handlePageChange(page: any) {
-  store.fetchLinks();
+function handlePageChange(page: number) {
+  store.fetchLinks(searchQuery.value, page);
   console.log(`Page changed to: ${page}`);
+}
+
+function handleSearchInput(query: string) {
+  searchQuery.value = query;
+  console.log(`Search query: ${query}`);
+  store.fetchLinks(query);
 }
 </script>
 
@@ -21,9 +31,27 @@ function handlePageChange(page: any) {
       <link-form></link-form>
     </div>
     <div class="col-8 col-md-8">
-      <link-list></link-list>
+      <input
+        type="text"
+        v-model="searchQuery"
+        @input="handleSearchInput(searchQuery)"
+        placeholder="Search links..."
+        class="search-bar"
+      />
+      <link-list :links="links" />
       <Pagination :totalPages="totalPages" @page-change="handlePageChange" />
     </div>
   </div>
 </template>
+
+<style scoped>
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+</style>
 
