@@ -13,7 +13,7 @@ class LinkService(private val userRepository: LinkRepository) {
 
     fun get(search: String = "", pageable: Pageable): List<Link> {
         val spec = Specification<Link> {
-            root, query, builder -> builder.like(builder.lower(root.get("title")), "%${search}%")
+            root, query, builder -> builder.like(builder.lower(root.get("title")), "%${search.lowercase()}%")
         }
         return this.userRepository.findAll(spec, pageable).toList()
     }
