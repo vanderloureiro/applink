@@ -26,10 +26,7 @@ final class UserService(private val userRepository: UserRepository) {
     }
 
     fun confirmEmailValidation(email: String) {
-        val user = userRepository.findByEmail(email) ?: return
-
-        user.isValidatedEmail = true
-        userRepository.save(user)
+        userRepository.changeEmailValidation(email, true)
     }
 
     fun generateRandomNumbers(qtd: Int): String {
