@@ -4,6 +4,7 @@ import com.vanderloureiro.applink_api.user.exception.EmailAlreadyUsedException
 import org.springframework.stereotype.Service
 import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
+import kotlin.random.Random
 
 @Service
 final class UserService(private val userRepository: UserRepository) {
@@ -19,11 +20,21 @@ final class UserService(private val userRepository: UserRepository) {
         if (maybeUser != null) {
             throw EmailAlreadyUsedException()
         }
-        /*
-        * Validar isso depois. Pode haver user duplicado em casos de mesmo nome de email mas de provedores diferentes
-        * */
-        user.name = user.email.split('@')[0]
+        user.name = user.email.substringBefore('@') + generateRandomNumbers(6)
         user.isValidatedEmail = false
         userRepository.save(user)
+    }
+
+    fun confirmEmailValidation(email: String) {
+        val user = userRepository.findByEmail(email) ?: return
+
+        user.isValidatedEmail = true
+        userRepository.save(user)
+    }
+
+    fun generateRandomNumbers(qtd: Int): String {
+        return (1..qtd)
+            .map { Random.nextInt(0, 10) }
+            .joinToString("")
     }
 }

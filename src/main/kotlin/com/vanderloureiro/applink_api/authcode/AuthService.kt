@@ -22,7 +22,7 @@ class AuthService(
 
     private val logger = KotlinLogging.logger {}
 
-    // [Refatorara] Preciso abrir o método pra entender regra de negócio e validação
+    // [Refatorar] Preciso abrir o método pra entender regra de negócio e validação
     fun generate(email: String) {
         val user = userService.getByEmail(email) ?: throw UserNotFoundException()
         generate(user?.id!!)
@@ -47,6 +47,7 @@ class AuthService(
             return null
         }
         val userDetails = customUserDetailsService.loadUserByUsername(auth.email)
+        userService.confirmEmailValidation(auth.email)
         return tokenService.generate(userDetails)
     }
 
