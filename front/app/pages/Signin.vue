@@ -8,7 +8,13 @@
         placeholder="Enter your email"
         @keyup.enter="sendEmail"
       />
-      <button @click="sendEmail">Send</button>
+      <div class="accept-terms" v-if="isOnboardingUser">
+        <input type="checkbox" name="acceptTerms" v-model="acceptTerms" />
+        I accept the terms and conditions
+      </div>
+      <br />
+      <button v-if="isOnboardingUser" @click="create">Create</button>
+      <button v-if="!isOnboardingUser" @click="sendEmail">Send</button>
     </div>
     <div v-else>
       <h2>Enter Code</h2>
@@ -30,8 +36,37 @@ import { useRouter } from 'vue-router';
 
 const email = ref('');
 const code = ref('');
+const acceptTerms = ref(false);
+const isOnboardingUser = ref(false);
 const emailSent = ref(false);
 const router = useRouter();
+
+async function create() {
+  if (acceptTerms.value) {
+    try {
+      const response = await fetch('http://localhost:8080/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email.value }),
+      });
+
+      if (response.ok) {
+        console.log('User created successfully:', email.value);
+        emailSent.value = true;
+        isOnboardingUser.value = false;
+        sendEmail(); 
+      } else {
+        console.log('Failed to create user. Status:', response.status);
+      }
+    } catch (error) {
+      console.error('Error occurred while creating user:', error);
+    }
+  } else {
+    alert('You must accept the terms and conditions to create an account.');
+  }
+}
 
 async function sendEmail() {
   if (email.value) {
@@ -47,8 +82,11 @@ async function sendEmail() {
       if (response.ok) {
         console.log('Email sent successfully:', email.value);
         emailSent.value = true;
+      } else if (response.status === 403) {
+        console.log('Onboarding user.');
+        isOnboardingUser.value = true;
       } else {
-        console.error('Failed to send email. Status:', response.status);
+        console.log('Failed to send email. Status:', response.status);
       }
     } catch (error) {
       console.error('Error occurred while sending email:', error);
@@ -75,6 +113,9 @@ async function verifyCode() {
         localStorage.setItem('authToken', token); // Save token in localStorage
         console.log('Code validated successfully and token saved:', token);
         router.push('/'); // Redirect to home page
+      } else if (response.status === 403) {
+        console.error('Onboarding user.');
+        isOnboardingUser.value = true;
       } else {
         console.error('Failed to validate code. Status:', response.status);
       }
@@ -85,6 +126,13 @@ async function verifyCode() {
     alert('Please enter a valid 6-digit code.');
   }
 }
+
+onMounted(() => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    router.push('/'); // Redirect to home if already authenticated
+  }
+});
 </script>
 
 <style scoped>
