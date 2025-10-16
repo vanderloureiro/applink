@@ -8,8 +8,11 @@
         </nuxt-link>
         </div>
         <div class="profile">
-          <nuxt-link to="/signin">
+          <nuxt-link v-if="!logged" to="/signin">
             <span>Entrar</span>
+          </nuxt-link>
+          <nuxt-link v-if="logged" to="/signin">
+            <button @click="sigout()">Sair</button>
           </nuxt-link>
         </div>
       </div>
@@ -17,6 +20,23 @@
       
     </header>
 </template>
+<script setup lang="ts"> 
+import { ref, onMounted } from 'vue';
+
+const logged = ref(false);
+
+onMounted(() => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    logged.value = true;
+  }
+});
+function sigout() {
+  localStorage.removeItem('authToken');
+  logged.value = false;
+  window.location.href = '/signin'; // Redireciona para a página de login
+}
+</script>
 <style scoped>
 header {
     background-color: #fff;
