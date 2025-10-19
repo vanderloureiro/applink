@@ -1,10 +1,12 @@
 package com.vanderloureiro.applink_api.authcode
 
 import com.vanderloureiro.applink_api.authcode.dto.ValidateAuthCodeRequest
+import com.vanderloureiro.applink_api.user.User
 import com.vanderloureiro.applink_api.user.UserService
 import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
@@ -25,7 +27,7 @@ class AuthService(
     // [Refatorar] Preciso abrir o método pra entender regra de negócio e validação
     fun generate(email: String) {
         val user = userService.getByEmail(email) ?: throw UserNotFoundException()
-        generate(user?.id!!)
+        generate(user.id!!)
     }
 
     fun generate(userId: UUID) {
@@ -49,6 +51,13 @@ class AuthService(
         val userDetails = customUserDetailsService.loadUserByUsername(auth.email)
         userService.confirmEmailValidation(auth.email)
         return tokenService.generate(userDetails)
+    }
+
+    fun getAuthenticatedUser(): CustomUserDetails? {
+        val auth = SecurityContextHolder.getContext().authentication
+        val principal = auth.principal
+        return principal as? CustomUserDetails
+            ?: throw IllegalStateException("Unexpected principal type: ${principal::class.simpleName}")
     }
 
 

@@ -19,10 +19,5 @@ class CustomUserDetailsService(
             ?.mapToUserDetails()
             ?: throw UsernameNotFoundException("Not found!")
 
-    private fun ApplicationUser.mapToUserDetails(): UserDetails =
-        User.builder()
-            .username(this.email)
-            .password(this.id.toString()) // TODO: improve
-            .roles("USER")
-            .build()
+    private fun ApplicationUser.mapToUserDetails(): UserDetails = CustomUserDetails(this.id!!, this.email, "")
 }

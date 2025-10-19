@@ -29,11 +29,8 @@ export const linkStore = defineStore('links', {
         await $fetch('http://localhost:8080/api/links', {
           method: 'POST',
           body: link,
-          headers: {
-            'Content-Type': 'application/json'
-          }
         });
-        await this.fetchLinks(); // atualiza a lista
+        await this.fetchLinks();
       } catch (error) {
         console.error('Error adding link:', error);
         throw error;

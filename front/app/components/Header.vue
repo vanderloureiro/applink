@@ -34,7 +34,7 @@ onMounted(() => {
 function sigout() {
   localStorage.removeItem('authToken');
   logged.value = false;
-  window.location.href = '/signin'; // Redireciona para a página de login
+  window.location.href = '/signin';
 }
 </script>
 <style scoped>
