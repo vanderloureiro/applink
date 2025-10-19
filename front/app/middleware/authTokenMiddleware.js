@@ -4,18 +4,18 @@ export function setupAuthTokenMiddleware() {
   window.fetch = async (input, init = {}) => {
     try {
       const token = localStorage.getItem('authToken');
-
-      const headers = new Headers(init.headers || {});
-
+      
       if (token && (!init.method || init.method.toUpperCase() !== 'OPTIONS')) {
-        headers.set('Authorization', `Bearer ${token}`);
-        headers.set('Content-Type', 'application/json');
+        init.headers = {
+          ...init.headers,
+          authorization: `Bearer ${token}`,
+          contentType: 'application/json'
+        };
       }
-      console.log('Request Headers:', Object.fromEntries(headers.entries()));
       return await originalFetch(input, init);
     } catch (error) {
       console.error('Fetch error:', error);
-      throw error;
+      throw error; // Repropaga o erro para que ele seja tratado no chamador
     }
   };
 }
