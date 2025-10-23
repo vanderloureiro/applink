@@ -13,7 +13,7 @@ export const linkStore = defineStore('links', {
   }),
 
   actions: {
-    async fetchLinks(query: string = '', page: number = 1, pageSize: number = 20) {
+    async fetchLinks(query: string = '', page: number = 1, pageSize: number = 7) {
       const params = new URLSearchParams();
       if (query) params.set('query', query);
       params.set('page', (page - 1).toString());

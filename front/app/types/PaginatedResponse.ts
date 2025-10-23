@@ -1,6 +1,6 @@
 import type { Link } from "./Link";
 
-interface PaginatedResponse {
+export interface PaginatedResponse {
   content: Link[];
   pageNumber: number;
   pageSize: number;

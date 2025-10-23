@@ -4,10 +4,10 @@ import Pagination from '@/components/Pagination.vue';
 import { ref, computed, onMounted } from 'vue';
 
 const store = linkStore();
-const totalPages = ref(10); // Exemplo de valor dinâmico
 const searchQuery = ref('');
 
-const links = computed(() => store.links); // Computed para refletir os dados da store
+const links = computed(() => store.links);
+const totalPages = computed(() => store.totalPages);
 
 onMounted(() => {
   store.fetchLinks();
@@ -15,12 +15,10 @@ onMounted(() => {
 
 function handlePageChange(page: number) {
   store.fetchLinks(searchQuery.value, page);
-  console.log(`Page changed to: ${page}`);
 }
 
 function handleSearchInput(query: string) {
   searchQuery.value = query;
-  console.log(`Search query: ${query}`);
   store.fetchLinks(query);
 }
 </script>
@@ -39,7 +37,10 @@ function handleSearchInput(query: string) {
         class="search-bar"
       />
       <link-list :links="links" />
-      <Pagination :totalPages="totalPages" @page-change="handlePageChange" />
+      <Pagination 
+        :totalPages="totalPages" 
+        @page-change="handlePageChange" 
+      />
     </div>
   </div>
 </template>
