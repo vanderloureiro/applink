@@ -2,7 +2,6 @@ package com.vanderloureiro.applink_api.authcode
 
 import com.vanderloureiro.applink_api.authcode.dto.ValidateAuthCodeRequest
 import com.vanderloureiro.applink_api.common.exception.UnauthorizedException
-import com.vanderloureiro.applink_api.user.User
 import com.vanderloureiro.applink_api.user.UserService
 import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -21,8 +20,8 @@ class AuthService(
     private val tokenService: TokenService,
     private val customUserDetailsService: CustomUserDetailsService,
     private val encoder: PasswordEncoder,
-    private val authManager: AuthenticationManager) {
-
+    private val authManager: AuthenticationManager,
+) {
     private val logger = KotlinLogging.logger {}
 
     // [Refatorar] Preciso abrir o método pra entender regra de negócio e validação
@@ -60,7 +59,4 @@ class AuthService(
         return principal as? CustomUserDetails
             ?: throw UnauthorizedException()
     }
-
-
-
 }

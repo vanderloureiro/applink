@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class ApplinkApiApplication
 
 fun main(args: Array<String>) {
-	runApplication<ApplinkApiApplication>(*args)
+    runApplication<ApplinkApiApplication>(*args)
 }

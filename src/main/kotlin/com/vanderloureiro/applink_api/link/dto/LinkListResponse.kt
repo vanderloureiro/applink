@@ -6,4 +6,5 @@ data class LinkListResponse(
     val pageSize: Int,
     val totalPage: Int,
     val totalElements: Long,
-    val empty: Boolean)
+    val empty: Boolean,
+)

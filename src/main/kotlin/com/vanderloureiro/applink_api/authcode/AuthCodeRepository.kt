@@ -8,10 +8,11 @@ import java.util.UUID
 
 @Repository
 interface AuthCodeRepository : JpaRepository<AuthCode, UUID> {
-
     @Query(
         value = "SELECT * FROM auth_code WHERE user_id = :userId AND updated_at >= NOW() - INTERVAL '4 HOUR'",
-        nativeQuery = true
+        nativeQuery = true,
     )
-    fun getValidAuthCode(@Param("userId") userId: UUID): AuthCode?
+    fun getValidAuthCode(
+        @Param("userId") userId: UUID,
+    ): AuthCode?
 }

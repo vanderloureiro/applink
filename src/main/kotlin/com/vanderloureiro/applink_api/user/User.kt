@@ -26,10 +26,9 @@ data class User(
     val links: MutableList<Link> = mutableListOf(),
     @Column(name = "created_at")
     @CreationTimestamp
-    var createdAt: OffsetDateTime? = null
+    var createdAt: OffsetDateTime? = null,
 ) {
 //
 //    @Column(name = "updated_at")
 //    var updatedAt: OffsetDateTime? = null
-
 }

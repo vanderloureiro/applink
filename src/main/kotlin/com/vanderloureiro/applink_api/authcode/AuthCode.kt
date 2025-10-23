@@ -17,5 +17,5 @@ data class AuthCode(
     var code: String,
     @Column(name = "updated_at")
     @CreationTimestamp
-    var updatedAt: OffsetDateTime? = null
+    var updatedAt: OffsetDateTime? = null,
 )

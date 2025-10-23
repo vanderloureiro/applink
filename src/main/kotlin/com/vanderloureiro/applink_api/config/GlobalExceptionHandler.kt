@@ -1,6 +1,5 @@
 package com.vanderloureiro.applink_api.config
 
-
 import com.vanderloureiro.applink_api.common.exception.UnauthorizedException
 import com.vanderloureiro.applink_api.user.exception.EmailAlreadyUsedException
 import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
@@ -9,10 +8,8 @@ import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 
-
 @ControllerAdvice
 class GlobalExceptionHandler {
-
     @ExceptionHandler(UserNotFoundException::class)
     fun notFoundException(ex: UserNotFoundException): ProblemDetail {
         val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.message ?: "User not found")
@@ -44,5 +41,4 @@ class GlobalExceptionHandler {
         problemDetail.setProperty("errorCode", HttpStatus.INTERNAL_SERVER_ERROR.value())
         return problemDetail
     }
-
 }

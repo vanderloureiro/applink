@@ -9,18 +9,16 @@ data class UserResponse(
     var name: String = "",
     var email: String = "",
     var isValidatedEmail: Boolean? = false,
-    var createdAt: OffsetDateTime? = null
+    var createdAt: OffsetDateTime? = null,
 ) {
-
     companion object {
-        fun fromDomain(user: User): UserResponse {
-            return UserResponse(
+        fun fromDomain(user: User): UserResponse =
+            UserResponse(
                 id = user.id,
                 name = user.name,
                 email = user.email,
                 isValidatedEmail = user.isValidatedEmail,
-                createdAt = user.createdAt
+                createdAt = user.createdAt,
             )
-        }
     }
 }

@@ -5,18 +5,17 @@ import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 typealias ApplicationUser = com.vanderloureiro.applink_api.user.User
 
 @Service
 class CustomUserDetailsService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : UserDetailsService {
-
     override fun loadUserByUsername(username: String): UserDetails =
-        userRepository.findByEmail(username)
+        userRepository
+            .findByEmail(username)
             ?.mapToUserDetails()
             ?: throw UserNotFoundException()
 

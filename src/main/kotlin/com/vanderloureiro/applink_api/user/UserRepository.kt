@@ -9,11 +9,13 @@ import java.util.UUID
 
 @Repository
 interface UserRepository : JpaRepository<User, UUID> {
-
     fun findByEmail(email: String): User?
 
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.isValidatedEmail = :isValidated WHERE u.email = :email")
-    fun changeEmailValidation(email: String, isValidated: Boolean): Int
+    fun changeEmailValidation(
+        email: String,
+        isValidated: Boolean,
+    ): Int
 }

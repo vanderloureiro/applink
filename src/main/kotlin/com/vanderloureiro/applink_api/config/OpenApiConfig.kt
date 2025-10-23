@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class OpenApiConfig {
     @Bean
-    fun openAPI(): OpenAPI {
-        return OpenAPI()
+    fun openAPI(): OpenAPI =
+        OpenAPI()
             .info(
-                Info().title("AppLink")
+                Info()
+                    .title("AppLink")
                     .description("Repository of links")
-                    .version("v1.0")
+                    .version("v1.0"),
             )
-    }
 }

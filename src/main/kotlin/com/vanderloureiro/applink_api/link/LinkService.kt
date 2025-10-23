@@ -10,41 +10,53 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
-import org.springframework.web.client.HttpClientErrorException
 import java.util.UUID
 
 @Service
-class LinkService(private val linkRepository: LinkRepository, private val userService: UserService) {
-
-    fun create(request: CreateLinkRequest, auth: CustomUserDetails) {
+class LinkService(
+    private val linkRepository: LinkRepository,
+    private val userService: UserService,
+) {
+    fun create(
+        request: CreateLinkRequest,
+        auth: CustomUserDetails,
+    ) {
         val user = userService.get(auth.id)!!
         val link = Link(title = request.title, path = request.url, description = request.description, owner = user)
         linkRepository.save(link)
     }
 
-    fun get(search: String = "", owner: UUID, pageable: Pageable): Page<Link> {
-        val spec = Specification<Link> { root, _, builder ->
-            val predicates = mutableListOf<Predicate>()
+    fun get(
+        search: String = "",
+        owner: UUID,
+        pageable: Pageable,
+    ): Page<Link> {
+        val spec =
+            Specification<Link> { root, _, builder ->
+                val predicates = mutableListOf<Predicate>()
 
-            if (search.isNotBlank()) {
-                predicates.add(
-                    builder.like(
-                        builder.lower(root.get("title")),
-                        "%${search.lowercase()}%"
+                if (search.isNotBlank()) {
+                    predicates.add(
+                        builder.like(
+                            builder.lower(root.get("title")),
+                            "%${search.lowercase()}%",
+                        ),
                     )
+                }
+
+                predicates.add(
+                    builder.equal(root.get<User>("owner").get<UUID>("id"), owner),
                 )
+
+                builder.and(*predicates.toTypedArray())
             }
-
-            predicates.add(
-                builder.equal(root.get<User>("owner").get<UUID>("id"), owner)
-            )
-
-            builder.and(*predicates.toTypedArray())
-        }
         return this.linkRepository.findAll(spec, pageable)
     }
 
-    fun remove(linkId: UUID, owner: UUID) {
+    fun remove(
+        linkId: UUID,
+        owner: UUID,
+    ) {
         val link = linkRepository.findById(linkId)
         if (link.isEmpty) return
         if (link.get().owner.id != owner) {

@@ -6,36 +6,45 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
 @Service
 class TokenService(
-    jwtProperties: JwtProperties
+    jwtProperties: JwtProperties,
 ) {
-    private val secretKey = Keys.hmacShaKeyFor(
-        jwtProperties.key.toByteArray()
-    )
+    private val secretKey =
+        Keys.hmacShaKeyFor(
+            jwtProperties.key.toByteArray(),
+        )
 
     fun generate(
         userDetails: UserDetails,
-        additionalClaims: Map<String, Any> = emptyMap()
+        additionalClaims: Map<String, Any> = emptyMap(),
     ): String =
-        Jwts.builder()
+        Jwts
+            .builder()
             .claims()
             .subject(userDetails.username)
             .issuedAt(Date(System.currentTimeMillis()))
-            .expiration(Date.from(
-                LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant()
-            ))
-            .add(additionalClaims)
+            .expiration(
+                Date.from(
+                    LocalDateTime
+                        .now()
+                        .plusDays(30)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant(),
+                ),
+            ).add(additionalClaims)
             .and()
             .signWith(secretKey)
             .compact()
 
-    fun isValid(token: String, userDetails: UserDetails): Boolean {
+    fun isValid(
+        token: String,
+        userDetails: UserDetails,
+    ): Boolean {
         val email = extractEmail(token)
 
         return userDetails.username == email && !isExpired(token)
@@ -51,9 +60,11 @@ class TokenService(
             .before(Date(System.currentTimeMillis()))
 
     private fun getAllClaims(token: String): Claims {
-        val parser = Jwts.parser()
-            .verifyWith(secretKey)
-            .build()
+        val parser =
+            Jwts
+                .parser()
+                .verifyWith(secretKey)
+                .build()
 
         return parser
             .parseSignedClaims(token)

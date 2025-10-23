@@ -14,27 +14,32 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
-    private val authenticationProvider: AuthenticationProvider
+    private val authenticationProvider: AuthenticationProvider,
 ) {
     @Bean
     fun securityFilterChain(
         http: HttpSecurity,
-        tokenAuthenticationFilter: TokenAuthenticationFilter
+        tokenAuthenticationFilter: TokenAuthenticationFilter,
     ): DefaultSecurityFilterChain {
         http
             .csrf { it.disable() }
             .authorizeHttpRequests {
-                it.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers("/v3/api-docs/**").permitAll()
-                    .requestMatchers("/swagger-ui/**").permitAll()
-                    .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                    .anyRequest().fullyAuthenticated()
-            }
-            .sessionManagement {
+                it
+                    .requestMatchers(HttpMethod.OPTIONS, "/**")
+                    .permitAll()
+                    .requestMatchers("/v3/api-docs/**")
+                    .permitAll()
+                    .requestMatchers("/swagger-ui/**")
+                    .permitAll()
+                    .requestMatchers("/api/auth/**")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/users")
+                    .permitAll()
+                    .anyRequest()
+                    .fullyAuthenticated()
+            }.sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            }
-            .authenticationProvider(authenticationProvider)
+            }.authenticationProvider(authenticationProvider)
             .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()

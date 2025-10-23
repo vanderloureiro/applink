@@ -20,18 +20,23 @@ import java.util.UUID
 @RequestMapping("/api/users")
 @CrossOrigin(origins = ["http://localhost:3000"])
 @Tags(Tag(name = "User", description = "User resources"))
-class UserController(val userService: UserService) {
-
+class UserController(
+    val userService: UserService,
+) {
     @PostMapping
     @ApiResponse(description = "Create an user")
-    fun create(@RequestBody request: CreateUserRequest): ResponseEntity<Void> {
+    fun create(
+        @RequestBody request: CreateUserRequest,
+    ): ResponseEntity<Void> {
         userService.create(request.toDomain())
         return ResponseEntity.noContent().build()
     }
 
     @ApiResponse(description = "Finds an user by your id")
     @GetMapping("/{id}")
-    fun get(@PathVariable id: UUID): ResponseEntity<UserResponse> {
+    fun get(
+        @PathVariable id: UUID,
+    ): ResponseEntity<UserResponse> {
         val user = userService.get(id) ?: throw UserNotFoundException()
         val response = UserResponse.fromDomain(user)
         return ResponseEntity.ok(response)
