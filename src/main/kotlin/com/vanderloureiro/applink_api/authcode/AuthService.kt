@@ -1,6 +1,7 @@
 package com.vanderloureiro.applink_api.authcode
 
 import com.vanderloureiro.applink_api.authcode.dto.ValidateAuthCodeRequest
+import com.vanderloureiro.applink_api.common.exception.UnauthorizedException
 import com.vanderloureiro.applink_api.user.User
 import com.vanderloureiro.applink_api.user.UserService
 import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
@@ -42,22 +43,22 @@ class AuthService(
         // sendMail(user, code)
     }
 
-    fun validate(auth: ValidateAuthCodeRequest): String? {
+    fun validate(auth: ValidateAuthCodeRequest): String {
         val user = userService.getByEmail(auth.email)
-        val authCode = repository.getValidAuthCode(user?.id!!) ?: return null
+        val authCode = repository.getValidAuthCode(user?.id!!) ?: throw UnauthorizedException()
         if (!encoder.matches(auth.code, authCode.code)) {
-            return null
+            throw UnauthorizedException()
         }
         val userDetails = customUserDetailsService.loadUserByUsername(auth.email)
         userService.confirmEmailValidation(auth.email)
         return tokenService.generate(userDetails)
     }
 
-    fun getAuthenticatedUser(): CustomUserDetails? {
+    fun getAuthenticatedUser(): CustomUserDetails {
         val auth = SecurityContextHolder.getContext().authentication
         val principal = auth.principal
         return principal as? CustomUserDetails
-            ?: throw IllegalStateException("Unexpected principal type: ${principal::class.simpleName}")
+            ?: throw UnauthorizedException()
     }
 
 

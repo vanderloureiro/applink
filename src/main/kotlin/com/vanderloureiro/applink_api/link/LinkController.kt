@@ -30,14 +30,14 @@ class LinkController(private val linkService: LinkService, private val authServi
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody request: CreateLinkRequest): ResponseEntity<Void> {
-        val userDetails = authService.getAuthenticatedUser() ?: return ResponseEntity.status(403).build()
+        val userDetails = authService.getAuthenticatedUser()
         this.linkService.create(request, userDetails)
         return ResponseEntity.noContent().build()
     }
 
     @GetMapping
     fun get(query: String = "", @PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) pageable: Pageable): ResponseEntity<List<LinkResponse>> {
-        val authUser = authService.getAuthenticatedUser() ?: return ResponseEntity.status(403).build()
+        val authUser = authService.getAuthenticatedUser()
         val links = this.linkService.get(query, authUser.id ,pageable)
         val mapped =  links.map { item ->
             LinkResponse(
@@ -53,7 +53,8 @@ class LinkController(private val linkService: LinkService, private val authServi
 
     @DeleteMapping("/{linkId}")
     fun remove(@PathVariable linkId: UUID): ResponseEntity<Void> {
-        val authUser = authService.getAuthenticatedUser()?: return ResponseEntity.status(403).build()
+        val authUser = authService.getAuthenticatedUser()
+        linkService.remove(linkId, authUser.id)
         try {
             linkService.remove(linkId, authUser.id)
         } catch (ex: UnauthorizedException) {

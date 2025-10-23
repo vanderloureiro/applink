@@ -29,9 +29,6 @@ class AuthController(private val authService: AuthService) {
     @PostMapping("/validate")
     fun validate(@RequestBody req: ValidateAuthCodeRequest): ResponseEntity<ValidateResponse> {
         val token = authService.validate(req)
-            ?: return ResponseEntity.status(HttpStatusCode.valueOf(HttpStatus.UNAUTHORIZED.value()))
-                .build()
-
         return ResponseEntity.ok(ValidateResponse(token))
     }
 }

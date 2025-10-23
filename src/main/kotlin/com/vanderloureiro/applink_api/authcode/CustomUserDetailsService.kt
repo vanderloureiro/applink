@@ -1,6 +1,7 @@
 package com.vanderloureiro.applink_api.authcode
 
 import com.vanderloureiro.applink_api.user.UserRepository
+import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -17,7 +18,7 @@ class CustomUserDetailsService(
     override fun loadUserByUsername(username: String): UserDetails =
         userRepository.findByEmail(username)
             ?.mapToUserDetails()
-            ?: throw UsernameNotFoundException("Not found!")
+            ?: throw UserNotFoundException()
 
     private fun ApplicationUser.mapToUserDetails(): UserDetails = CustomUserDetails(this.id!!, this.email, "")
 }
