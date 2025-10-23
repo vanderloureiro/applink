@@ -55,13 +55,6 @@ class LinkController(private val linkService: LinkService, private val authServi
     fun remove(@PathVariable linkId: UUID): ResponseEntity<Void> {
         val authUser = authService.getAuthenticatedUser()
         linkService.remove(linkId, authUser.id)
-        try {
-            linkService.remove(linkId, authUser.id)
-        } catch (ex: UnauthorizedException) {
-            return ResponseEntity.status(401).build()
-        } catch (ex: RuntimeException) {
-            return ResponseEntity.internalServerError().build()
-        }
         return ResponseEntity.noContent().build()
     }
 }

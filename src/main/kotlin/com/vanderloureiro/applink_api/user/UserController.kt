@@ -2,6 +2,7 @@ package com.vanderloureiro.applink_api.user
 
 import com.vanderloureiro.applink_api.user.dto.CreateUserRequest
 import com.vanderloureiro.applink_api.user.dto.UserResponse
+import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.tags.Tags
@@ -31,7 +32,7 @@ class UserController(val userService: UserService) {
     @ApiResponse(description = "Finds an user by your id")
     @GetMapping("/{id}")
     fun get(@PathVariable id: UUID): ResponseEntity<UserResponse> {
-        val user = userService.get(id) ?: return ResponseEntity.notFound().build()
+        val user = userService.get(id) ?: throw UserNotFoundException()
         val response = UserResponse.fromDomain(user)
         return ResponseEntity.ok(response)
     }
