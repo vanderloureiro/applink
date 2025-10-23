@@ -1,6 +1,7 @@
 package com.vanderloureiro.applink_api.link
 
 import com.vanderloureiro.applink_api.authcode.CustomUserDetails
+import com.vanderloureiro.applink_api.common.exception.UnauthorizedException
 import com.vanderloureiro.applink_api.link.dto.CreateLinkRequest
 import com.vanderloureiro.applink_api.user.User
 import com.vanderloureiro.applink_api.user.UserService
@@ -40,5 +41,14 @@ class LinkService(private val linkRepository: LinkRepository, private val userSe
             builder.and(*predicates.toTypedArray())
         }
         return this.linkRepository.findAll(spec, pageable).toList()
+    }
+
+    fun remove(linkId: UUID, owner: UUID) {
+        val link = linkRepository.findById(linkId)
+        if (link.isEmpty) return
+        if (link.get().owner.id != owner) {
+            throw UnauthorizedException()
+        }
+        linkRepository.deleteById(linkId)
     }
 }

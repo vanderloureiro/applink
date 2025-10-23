@@ -1,21 +1,26 @@
 package com.vanderloureiro.applink_api.link
 
 import com.vanderloureiro.applink_api.authcode.AuthService
+import com.vanderloureiro.applink_api.common.exception.UnauthorizedException
 import com.vanderloureiro.applink_api.link.dto.CreateLinkRequest
 import com.vanderloureiro.applink_api.link.dto.LinkResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.tags.Tags
+import jakarta.validation.constraints.NotNull
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/links")
@@ -44,5 +49,18 @@ class LinkController(private val linkService: LinkService, private val authServi
             )
         }
         return ResponseEntity.ok(mapped)
+    }
+
+    @DeleteMapping("/{linkId}")
+    fun remove(@PathVariable linkId: UUID): ResponseEntity<Void> {
+        val authUser = authService.getAuthenticatedUser()?: return ResponseEntity.status(403).build()
+        try {
+            linkService.remove(linkId, authUser.id)
+        } catch (ex: UnauthorizedException) {
+            return ResponseEntity.status(401).build()
+        } catch (ex: RuntimeException) {
+            return ResponseEntity.internalServerError().build()
+        }
+        return ResponseEntity.noContent().build()
     }
 }
