@@ -3,13 +3,18 @@ package com.vanderloureiro.applink_api.link
 import com.vanderloureiro.applink_api.authcode.AuthService
 import com.vanderloureiro.applink_api.common.exception.UnauthorizedException
 import com.vanderloureiro.applink_api.link.dto.CreateLinkRequest
+import com.vanderloureiro.applink_api.link.dto.LinkListResponse
 import com.vanderloureiro.applink_api.link.dto.LinkResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.tags.Tags
 import jakarta.validation.constraints.NotNull
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
+import org.springframework.data.web.PagedModel
+import org.springframework.data.web.PagedResourcesAssembler
+import org.springframework.http.HttpEntity
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -36,7 +41,7 @@ class LinkController(private val linkService: LinkService, private val authServi
     }
 
     @GetMapping
-    fun get(query: String = "", @PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) pageable: Pageable): ResponseEntity<List<LinkResponse>> {
+    fun get(query: String = "", @PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) pageable: Pageable): ResponseEntity<LinkListResponse> {
         val authUser = authService.getAuthenticatedUser()
         val links = this.linkService.get(query, authUser.id ,pageable)
         val mapped =  links.map { item ->
@@ -48,7 +53,14 @@ class LinkController(private val linkService: LinkService, private val authServi
                 createdAt = item.createdAt!!
             )
         }
-        return ResponseEntity.ok(mapped)
+        val response = LinkListResponse(
+            content = mapped.get().toList(),
+            pageNumber = links.pageable.pageNumber,
+            pageSize = links.pageable.pageSize,
+            totalPage = links.totalPages,
+            totalElements = links.totalElements,
+            empty = links.isEmpty)
+        return ResponseEntity.ok(response)
     }
 
     @DeleteMapping("/{linkId}")

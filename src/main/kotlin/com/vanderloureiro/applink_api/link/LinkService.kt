@@ -6,6 +6,7 @@ import com.vanderloureiro.applink_api.link.dto.CreateLinkRequest
 import com.vanderloureiro.applink_api.user.User
 import com.vanderloureiro.applink_api.user.UserService
 import jakarta.persistence.criteria.Predicate
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
@@ -21,7 +22,7 @@ class LinkService(private val linkRepository: LinkRepository, private val userSe
         linkRepository.save(link)
     }
 
-    fun get(search: String = "", owner: UUID, pageable: Pageable): List<Link> {
+    fun get(search: String = "", owner: UUID, pageable: Pageable): Page<Link> {
         val spec = Specification<Link> { root, _, builder ->
             val predicates = mutableListOf<Predicate>()
 
@@ -40,7 +41,7 @@ class LinkService(private val linkRepository: LinkRepository, private val userSe
 
             builder.and(*predicates.toTypedArray())
         }
-        return this.linkRepository.findAll(spec, pageable).toList()
+        return this.linkRepository.findAll(spec, pageable)
     }
 
     fun remove(linkId: UUID, owner: UUID) {
