@@ -14,12 +14,15 @@ export const linkStore = defineStore('links', {
 
   actions: {
     async fetchLinks(query: string = '', page: number = 1, pageSize: number = 7) {
+      const config = useRuntimeConfig();
+      const baseURL = config.public.apiBase || '/';
+      
       const params = new URLSearchParams();
       if (query) params.set('query', query);
       params.set('page', (page - 1).toString());
       params.set('size', pageSize.toString());
 
-      const url = `http://localhost:8080/api/links?${params}`;
+      const url = `${baseURL}/api/links?${params}`;
 
       try {
         const res = await $fetch<PaginatedResponse>(url);
@@ -36,8 +39,11 @@ export const linkStore = defineStore('links', {
     },
 
     async addLink(link: any) {
+      const config = useRuntimeConfig();
+      const baseURL = config.public.apiBase || '/';
+      
       try {
-        await $fetch('http://localhost:8080/api/links', {
+        await $fetch(`${baseURL}/api/links`, {
           method: 'POST',
           body: link,
         });
