@@ -2,6 +2,7 @@ package com.vanderloureiro.applink_api.authcode
 
 import com.vanderloureiro.applink_api.authcode.dto.ValidateAuthCodeRequest
 import com.vanderloureiro.applink_api.common.exception.UnauthorizedException
+import com.vanderloureiro.applink_api.notification.EmailService
 import com.vanderloureiro.applink_api.user.UserService
 import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -20,7 +21,7 @@ class AuthService(
     private val tokenService: TokenService,
     private val customUserDetailsService: CustomUserDetailsService,
     private val encoder: PasswordEncoder,
-    private val authManager: AuthenticationManager,
+    private val emailService: EmailService,
 ) {
     private val logger = KotlinLogging.logger {}
 
@@ -38,8 +39,8 @@ class AuthService(
             val authCode = AuthCode(userId = userId, encoded, updatedAt = OffsetDateTime.now())
             repository.save(authCode)
             logger.info { code }
+            emailService.sendAuthCodeEmail(code, user.name, user.email)
         }
-        // sendMail(user, code)
     }
 
     fun validate(auth: ValidateAuthCodeRequest): String {

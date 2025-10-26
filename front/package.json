@@ -11,10 +11,12 @@
     "copy:static": "rm -rf ../src/main/resources/static/* && cp -r .output/public/* ../src/main/resources/static"
   },
   "dependencies": {
+    "@bootstrap-vue-next/nuxt": "^0.40.7",
     "@nuxt/eslint": "^1.5.2",
     "@nuxt/icon": "^1.15.0",
     "@pinia/nuxt": "^0.11.2",
     "bootstrap": "^5.3.8",
+    "bootstrap-vue-next": "^0.40.7",
     "eslint": "^9.31.0",
     "nuxt": "^4.0.0",
     "vue": "^3.5.17",

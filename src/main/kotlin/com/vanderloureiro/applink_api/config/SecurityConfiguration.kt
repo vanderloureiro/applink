@@ -27,6 +27,8 @@ class SecurityConfiguration(
                 it
                     .requestMatchers(HttpMethod.OPTIONS, "/**")
                     .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/*")
+                    .permitAll()
                     .requestMatchers("/v3/api-docs/**")
                     .permitAll()
                     .requestMatchers("/swagger-ui/**")

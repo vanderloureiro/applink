@@ -1,4 +1,4 @@
-<template>
+<template id="app">
   <div class="container">
     <NuxtPage />
   </div>

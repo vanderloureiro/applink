@@ -33,12 +33,13 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
+    implementation("io.mailtrap:mailtrap-java:1.0.0")
     // Security
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("io.jsonwebtoken:jjwt-api:0.12.3")
