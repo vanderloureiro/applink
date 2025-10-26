@@ -14,5 +14,9 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8080'
     }
-  }
+  },
+  app: {
+    baseURL: '/',
+    cdnURL: process.env.NUXT_PUBLIC_BASE_URL || ''
+  },
 })
