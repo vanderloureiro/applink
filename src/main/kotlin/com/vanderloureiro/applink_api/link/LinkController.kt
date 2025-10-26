@@ -23,7 +23,7 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("/api/links")
-@CrossOrigin(origins = ["http://localhost:3000"])
+@CrossOrigin(origins = ["\${app.cors.origin:http://localhost:3000}"])
 @Tags(Tag(name = "Link", description = "Link resources"))
 class LinkController(
     private val linkService: LinkService,

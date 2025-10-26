@@ -18,7 +18,7 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = ["http://localhost:3000"])
+@CrossOrigin(origins = ["\${app.cors.origin:http://localhost:3000}"])
 @Tags(Tag(name = "User", description = "User resources"))
 class UserController(
     val userService: UserService,

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = ["http://localhost:3000"])
+@CrossOrigin(origins = ["\${app.cors.origin:http://localhost:3000}"])
 @Tags(Tag(name = "Auth", description = "Auth resource"))
 class AuthController(
     private val authService: AuthService,
