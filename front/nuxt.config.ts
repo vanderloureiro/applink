@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     }
   },
   app: {
-    baseURL: '/',
+    baseURL: process.env.NUXT_PUBLIC_BASE_URL || '',
     cdnURL: process.env.NUXT_PUBLIC_BASE_URL || ''
   },
 })

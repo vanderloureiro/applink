@@ -41,10 +41,13 @@ const isOnboardingUser = ref(false);
 const emailSent = ref(false);
 const router = useRouter();
 
+const config = useRuntimeConfig();
+const baseURL = config.public.apiBase || '/';
+
 async function create() {
   if (acceptTerms.value) {
     try {
-      const response = await fetch('http://localhost:8080/api/users', {
+      const response = await fetch(`${baseURL}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +74,7 @@ async function create() {
 async function sendEmail() {
   if (email.value) {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/sign-in', {
+      const response = await fetch(`${baseURL}/api/auth/sign-in`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +102,7 @@ async function sendEmail() {
 async function verifyCode() {
   if (code.value.length === 6) {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/validate', {
+      const response = await fetch(`${baseURL}/api/auth/validate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +133,7 @@ async function verifyCode() {
 onMounted(() => {
   const token = localStorage.getItem('authToken');
   if (token) {
-    router.push('/'); // Redirect to home if already authenticated
+    router.push('/');
   }
 });
 </script>
