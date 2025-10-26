@@ -6,7 +6,10 @@ export default defineNuxtConfig({
     'bootstrap/dist/css/bootstrap.min.css',
     '~/assets/css/main.css'
   ],
-  modules: ['@nuxt/eslint', '@nuxt/icon', '@pinia/nuxt', '@bootstrap-vue-next/nuxt'],
+  plugins: [
+    '~/plugins/bootstrap.client.ts' 
+  ],
+  modules: ['@nuxt/eslint', '@nuxt/icon', '@pinia/nuxt'],
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8080'
