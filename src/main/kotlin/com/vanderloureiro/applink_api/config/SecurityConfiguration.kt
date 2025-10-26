@@ -32,7 +32,7 @@ class SecurityConfiguration(
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/signin/*")
                     .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/signin*")
+                    .requestMatchers(HttpMethod.GET, "/signin")
                     .permitAll()
                     .requestMatchers("/v3/api-docs/**")
                     .permitAll()
