@@ -1,5 +1,6 @@
 package com.vanderloureiro.applink_api.user
 
+import com.vanderloureiro.applink_api.authcode.AuthService
 import com.vanderloureiro.applink_api.user.dto.CreateUserRequest
 import com.vanderloureiro.applink_api.user.dto.UserResponse
 import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
@@ -21,7 +22,8 @@ import java.util.UUID
 @CrossOrigin(origins = ["\${app.cors.origin:http://localhost:3000}"])
 @Tags(Tag(name = "User", description = "User resources"))
 class UserController(
-    val userService: UserService,
+    private val userService: UserService,
+    private val authService: AuthService
 ) {
     @PostMapping
     @ApiResponse(description = "Create an user")
@@ -33,10 +35,9 @@ class UserController(
     }
 
     @ApiResponse(description = "Finds an user by your id")
-    @GetMapping("/{id}")
-    fun get(
-        @PathVariable id: UUID,
-    ): ResponseEntity<UserResponse> {
+    @GetMapping("/me")
+    fun get(): ResponseEntity<UserResponse> {
+        val id = authService.getAuthenticatedUser().id
         val user = userService.get(id) ?: throw UserNotFoundException()
         val response = UserResponse.fromDomain(user)
         return ResponseEntity.ok(response)
