@@ -8,11 +8,11 @@
         </nuxt-link>
         </div>
         <div class="profile">
-          <nuxt-link v-if="!logged" to="/signin">
+          <nuxt-link v-if="!auth.isAuthenticated" to="/signin">
             <span>Entrar</span>
           </nuxt-link>
-          <nuxt-link v-if="logged" to="/signin">
-            <button @click="sigout()">Sair</button>
+          <nuxt-link v-if="auth.isAuthenticated" to="/signin">
+            <button class="btn-signout" @click="sigout()">Sair</button>
           </nuxt-link>
         </div>
       </div>
@@ -21,19 +21,17 @@
     </header>
 </template>
 <script setup lang="ts"> 
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
+import { useAuthStore } from '@/stores/authStore';
 
-const logged = ref(false);
+const auth = useAuthStore();
 
 onMounted(() => {
-  const token = localStorage.getItem('authToken');
-  if (token) {
-    logged.value = true;
-  }
+  auth.checkAuth();
 });
+
 function sigout() {
-  localStorage.removeItem('authToken');
-  logged.value = false;
+  auth.logout();
   window.location.href = '/signin';
 }
 </script>
@@ -51,6 +49,14 @@ header {
   font-weight: 700;
   font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
+}
+.btn-signout {
+  background-color: #fff;
+  color: #464646;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 a {
   text-decoration: none;

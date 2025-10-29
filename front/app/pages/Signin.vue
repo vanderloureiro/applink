@@ -33,6 +33,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
 
 const email = ref('');
 const code = ref('');
@@ -43,6 +44,8 @@ const router = useRouter();
 
 const config = useRuntimeConfig();
 const baseURL = config.public.apiBase || '/';
+
+const auth = useAuthStore();
 
 async function create() {
   if (acceptTerms.value) {
@@ -112,10 +115,8 @@ async function verifyCode() {
 
       if (response.ok) {
         const data = await response.json();
-        const token = data.token;
-        localStorage.setItem('authToken', token); // Save token in localStorage
-        console.log('Code validated successfully and token saved:', token);
-        router.push('/'); // Redirect to home page
+        auth.login(data.token); // Usar a store para fazer login
+        router.push('/');
       } else if (response.status === 403) {
         console.error('Onboarding user.');
         isOnboardingUser.value = true;
@@ -131,8 +132,8 @@ async function verifyCode() {
 }
 
 onMounted(() => {
-  const token = localStorage.getItem('authToken');
-  if (token) {
+  auth.checkAuth();
+  if (auth.isAuthenticated) {
     router.push('/');
   }
 });
