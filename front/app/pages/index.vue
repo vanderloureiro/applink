@@ -54,5 +54,25 @@ function handleSearchInput(query: string) {
   border-radius: 5px;
   font-size: 14px;
 }
+
+.row {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 1rem;
+}
+
+.col-12 {
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .col-md-4 {
+    padding-right: 1rem;
+  }
+  
+  .col-md-8 {
+    padding-left: 1rem;
+  }
+}
 </style>
 
