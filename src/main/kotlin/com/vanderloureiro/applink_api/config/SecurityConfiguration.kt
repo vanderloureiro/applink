@@ -27,7 +27,8 @@ class SecurityConfiguration(
                 it
                     .requestMatchers(HttpMethod.OPTIONS, "/**")
                     .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/*").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/*")
+                    .permitAll()
                     .requestMatchers(HttpMethod.GET, "/_nuxt/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/signin/*")
