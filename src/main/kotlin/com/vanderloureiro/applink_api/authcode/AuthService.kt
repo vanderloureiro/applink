@@ -4,9 +4,7 @@ import com.vanderloureiro.applink_api.authcode.dto.ValidateAuthCodeRequest
 import com.vanderloureiro.applink_api.common.exception.UnauthorizedException
 import com.vanderloureiro.applink_api.notification.EmailService
 import com.vanderloureiro.applink_api.user.UserService
-import com.vanderloureiro.applink_api.user.exception.UserNotFoundException
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
