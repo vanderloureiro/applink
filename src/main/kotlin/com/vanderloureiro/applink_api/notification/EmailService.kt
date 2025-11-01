@@ -30,10 +30,10 @@ class EmailService(
         val mail =
             MailtrapMail
                 .builder()
-                .from(Address(recipient))
+                .from(Address(recipient, "Ibira"))
                 .to(List.of<Address?>(Address(email)))
-                .replyTo(Address(recipient, "AppLink"))
-                .subject("AppLink - Entrar")
+                .replyTo(Address(recipient, "Ibira"))
+                .subject("Ibira - Entrar")
                 .text("Olá, $name. O seu código de autenticação é: $code")
                 .build()
 

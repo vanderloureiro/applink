@@ -1,6 +1,6 @@
 <template>
     <footer class="footer">
-        <p>&copy; 2025 AppLink. All rights reserved.</p>
+        <p>&copy; 2025 ibira. All rights reserved.</p>
     </footer>
 </template>
 <style scoped>
