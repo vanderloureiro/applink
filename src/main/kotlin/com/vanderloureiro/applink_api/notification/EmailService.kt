@@ -30,8 +30,8 @@ class EmailService(
         val mail =
             MailtrapMail
                 .builder()
-                .from(Address(email))
-                .to(List.of<Address?>(Address(recipient)))
+                .from(Address(recipient))
+                .to(List.of<Address?>(Address(email)))
                 .replyTo(Address(recipient, "AppLink"))
                 .subject("AppLink - Entrar")
                 .text("Olá, $name. O seu código de autenticação é: $code")
@@ -39,7 +39,7 @@ class EmailService(
 
         try {
             // TODO: change
-            client.switchToEmailTestingApi(inboxId)
+            // client.switchToEmailTestingApi(inboxId)
             println(client.send(mail))
         } catch (e: Exception) {
             println("Caught exception : " + e)
