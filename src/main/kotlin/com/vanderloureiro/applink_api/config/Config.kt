@@ -1,7 +1,5 @@
 package com.vanderloureiro.applink_api.config
 
-import com.vanderloureiro.applink_api.authcode.CustomUserDetailsService
-import com.vanderloureiro.applink_api.user.UserRepository
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -16,14 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 @EnableConfigurationProperties(JwtProperties::class)
 class Config {
-    @Bean
-    fun userDetailsService(userRepository: UserRepository): UserDetailsService = CustomUserDetailsService(userRepository)
 
     @Bean
-    fun authenticationProvider(userRepository: UserRepository): AuthenticationProvider =
+    fun authenticationProvider(userDetailsService: UserDetailsService): AuthenticationProvider =
         DaoAuthenticationProvider()
             .also {
-                it.setUserDetailsService(userDetailsService(userRepository))
+                it.setUserDetailsService(userDetailsService)
                 it.setPasswordEncoder(encoder())
             }
 
