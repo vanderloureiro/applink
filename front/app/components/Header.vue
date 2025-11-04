@@ -23,8 +23,10 @@
 <script setup lang="ts"> 
 import { onMounted } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
+import { useRouter } from 'vue-router';
 
 const auth = useAuthStore();
+const router = useRouter();
 
 onMounted(() => {
   auth.checkAuth();
@@ -32,7 +34,7 @@ onMounted(() => {
 
 function sigout() {
   auth.logout();
-  window.location.href = '/signin';
+  router.push('/');
 }
 </script>
 <style scoped>
