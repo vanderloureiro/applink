@@ -12,7 +12,14 @@ export function setupAuthTokenMiddleware() {
           'Content-Type': 'application/json'
         };
       }
-      return await originalFetch(input, init);
+
+      const response = await originalFetch(input, init);
+      
+      if (response.status === 403) {
+        localStorage.removeItem('authToken');
+      }
+      
+      return response;
     } catch (error) {
       console.error('Fetch error:', error);
       throw error;
