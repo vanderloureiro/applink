@@ -5,7 +5,7 @@ export function setupAuthTokenMiddleware() {
     try {
       const token = localStorage.getItem('authToken');
       
-      if (token && (!init.method || init.method.toUpperCase() !== 'OPTIONS')) {
+      if (token) {
         init.headers = {
           ...init.headers,
           'Authorization': `Bearer ${token}`,
