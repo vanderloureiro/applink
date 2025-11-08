@@ -11,15 +11,8 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/api/links")
@@ -41,7 +34,7 @@ class LinkController(
     @GetMapping
     fun get(
         query: String = "",
-        @PageableDefault(page = 0, size = 3, direction = Sort.Direction.ASC) pageable: Pageable,
+        @PageableDefault(page = 0, size = 3, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): ResponseEntity<LinkListResponse> {
         val authUser = authService.getAuthenticatedUser()
         val links = this.linkService.get(query, authUser.id, pageable)
