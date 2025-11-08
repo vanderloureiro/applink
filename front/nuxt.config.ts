@@ -19,4 +19,11 @@ export default defineNuxtConfig({
     baseURL: process.env.NUXT_PUBLIC_BASE_URL || '',
     cdnURL: process.env.NUXT_PUBLIC_BASE_URL || ''
   },
+  nitro: {
+    prerender: {
+      crawlLinks: false,
+      routes: ['/'],
+      failOnError: false
+    },
+  },
 })
