@@ -1,11 +1,7 @@
 <script setup>
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
-import { setupAuthTokenMiddleware } from './middleware/authTokenMiddleware';
 
-onMounted(() => {
-  setupAuthTokenMiddleware(); // Initialize middleware
-});
 </script>
 <template>
   <div class="app">
