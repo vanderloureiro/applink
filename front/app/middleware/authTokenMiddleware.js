@@ -1,4 +1,9 @@
 export function setupAuthTokenMiddleware() {
+  if (typeof window === 'undefined') {
+    // Não execute no lado do servidor
+    return;
+  }
+
   const originalFetch = window.fetch;
 
   window.fetch = async (input, init = {}) => {
