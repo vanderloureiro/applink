@@ -12,12 +12,24 @@ export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@nuxt/icon', '@pinia/nuxt'],
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || ''
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || '',
+      adId: process.env.NUX_PUBLIC_ADSENSE_ID || '',
+      adSenseSrc: process.env.NUX_PUBLIC_ADSENSE_SRC || '',
+      isProd: process.env.NUX_PUBLIC_ADSENSE_ENV === 'PROD'
     }
   },
   app: {
     baseURL: process.env.NUXT_PUBLIC_BASE_URL || '',
-    cdnURL: process.env.NUXT_PUBLIC_BASE_URL || ''
+    cdnURL: process.env.NUXT_PUBLIC_BASE_URL || '',
+    head: process.env.NUX_PUBLIC_ADSENSE_ENV === 'PROD' ? {
+      script: [
+        {
+          src: process.env.NUX_PUBLIC_ADSENSE_SRC,
+          async: true,
+          crossorigin: 'anonymous'
+        }
+      ]
+    } : {}
   },
   nitro: {
     prerender: {
@@ -26,4 +38,5 @@ export default defineNuxtConfig({
       failOnError: false
     },
   },
+  
 })
