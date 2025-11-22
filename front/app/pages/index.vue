@@ -13,7 +13,7 @@ const links = computed(() => store.links);
 const totalPages = computed(() => store.totalPages);
 
 onMounted(() => {
-  store.fetchLinks()
+  store.fetchLinks();
   if (config.public.isProd) {
     try {
       // @ts-ignore
@@ -23,8 +23,6 @@ onMounted(() => {
     }
   }
 });
-
-
 
 function handlePageChange(page: number) {
   store.fetchLinks(searchQuery.value, page);

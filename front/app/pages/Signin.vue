@@ -1,7 +1,11 @@
 <template>
   <div class="row">
     <div class="col-12 col-md-6 offset-md-3 mt-3">
-      <div class="signin-container">
+      <div class="signin-container" v-if="maintenance">
+        <h2>Account not created - Maintenance Mode</h2>
+        <p class="onboarding-alert">The system is currently under maintenance. Please try again later.</p>
+      </div>
+      <div class="signin-container" v-if="!maintenance">
         <div v-if="!emailSent">
           <div v-if="!isOnboardingUser">
             <h2>Sign In</h2>
@@ -24,7 +28,7 @@
               I accept the terms and conditions
             </label>
           </div>
-          <button v-if="isOnboardingUser" class="btn button-primary btn-save" @click="create">Create</button>
+          <button :disabled="!acceptTerms" v-if="isOnboardingUser" class="btn button-primary btn-save" @click="create">Create</button>
           <button v-if="!isOnboardingUser" class="btn button-primary btn-save" @click="sendEmail">Send</button>
         </div>
         <div v-else>
@@ -56,6 +60,7 @@ const email = ref('');
 const code = ref('');
 const acceptTerms = ref(false);
 const isOnboardingUser = ref(false);
+const maintenance = ref(false);
 const emailSent = ref(false);
 const router = useRouter();
 
@@ -80,7 +85,9 @@ async function create() {
         emailSent.value = true;
         isOnboardingUser.value = false;
         sendEmail(); 
-      } else {
+      } else if (response.status === 501) {
+        maintenance.value = true;
+      } else{
         console.log('Failed to create user. Status:', response.status);
       }
     } catch (error) {
