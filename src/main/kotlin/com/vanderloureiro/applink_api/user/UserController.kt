@@ -23,8 +23,9 @@ class UserController(
     fun create(
         @RequestBody request: CreateUserRequest,
     ): ResponseEntity<Void> {
-        userService.create(request.toDomain())
-        return ResponseEntity.noContent().build()
+//        userService.create(request.toDomain())
+//        return ResponseEntity.noContent().build()
+        return ResponseEntity.status(501).build()
     }
 
     @ApiResponse(description = "Finds an user by your id")

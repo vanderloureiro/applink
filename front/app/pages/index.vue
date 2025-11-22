@@ -3,9 +3,6 @@ import { linkStore } from '@/stores/linkStore';
 import Pagination from '@/components/Pagination.vue';
 import { ref, computed, onMounted } from 'vue';
 
-const config = useRuntimeConfig()
-const adSenseId = "ca-pub-" + config.public.adSenseId
-
 const store = linkStore();
 const searchQuery = ref('');
 
@@ -13,18 +10,8 @@ const links = computed(() => store.links);
 const totalPages = computed(() => store.totalPages);
 
 onMounted(() => {
-  store.fetchLinks()
-  if (config.public.isProd) {
-    try {
-      // @ts-ignore
-      (adsbygoogle = window.adsbygoogle || []).push({})
-    } catch (e) {
-      console.warn('Erro ao inicializar AdSense:', e)
-    }
-  }
+  store.fetchLinks();
 });
-
-
 
 function handlePageChange(page: number) {
   store.fetchLinks(searchQuery.value, page);
@@ -40,14 +27,6 @@ function handleSearchInput(query: string) {
   <div class="row">
     <div class="col-12 col-md-4 mt-3">
       <link-form></link-form>
-      <div v-if="config.public.isProd">
-        <ins class="adsbygoogle"
-         style="display:block"
-         :data-ad-client="adSenseId"
-         data-ad-slot="1234567890"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-      </div>
     </div>
     <div class="col-12 col-md-8 mt-3">
       <input
