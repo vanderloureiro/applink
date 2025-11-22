@@ -22,7 +22,6 @@
               @keyup.enter="sendEmail"
             />
           </div>
-          
           <div class="field accept-terms" v-if="isOnboardingUser">
             <label>
               <input type="checkbox" name="acceptTerms" v-model="acceptTerms" />
