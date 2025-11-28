@@ -2,8 +2,8 @@
     <footer class="footer">
         <p>&copy; 2025 ibira. All rights reserved.</p>
         <p>
-            <a href="/use-terms" class="terms-link">Terms of Use</a> | 
-            <a href="/privacy-policy" class="terms-link">Privacy Policy</a>
+            <nuxt-link to="/use-terms" class="terms-link">Terms of Use</nuxt-link> | 
+            <nuxt-link to="/privacy-policy" class="terms-link">Privacy Policy</nuxt-link>
         </p>
     </footer>
 </template>
