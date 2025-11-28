@@ -1,6 +1,10 @@
 <template>
     <footer class="footer">
         <p>&copy; 2025 ibira. All rights reserved.</p>
+        <p>
+            <a href="/use-terms" class="terms-link">Terms of Use</a> | 
+            <a href="/privacy-policy" class="terms-link">Privacy Policy</a>
+        </p>
     </footer>
 </template>
 <style scoped>
@@ -11,6 +15,15 @@
     color: #6b7280;
     width: 100%;
     font-size: 0.875rem;
-    text-align: center;
+}
+
+.terms-link {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.terms-link:hover {
+    text-decoration: underline;
 }
 </style>
