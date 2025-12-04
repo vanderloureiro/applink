@@ -30,15 +30,27 @@
       </div>
       <button type="submit">Save Changes</button>
     </form>
+    <button class="logout-btn" @click="handleLogout">Sign Out</button>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useAuth } from '~/composables/useAuth';
 
-const name = ref('John Doe'); // Example default value
-const email = ref('johndoe@example.com'); // Example default value
-const notifications = ref('enabled'); // Example default value
+const { user, fetchUser, logout } = useAuth();
+
+const name = ref('');
+const email = ref('');
+const notifications = ref('enabled');
+
+onMounted(async () => {
+  await fetchUser();
+  if (user.value) {
+    name.value = user.value.name;
+    email.value = user.value.email;
+  }
+});
 
 function updateProfile() {
   console.log('Profile updated:', {
@@ -47,6 +59,10 @@ function updateProfile() {
     notifications: notifications.value,
   });
   alert('Profile updated successfully!');
+}
+
+function handleLogout() {
+  logout();
 }
 </script>
 
@@ -89,8 +105,15 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 10px;
 }
 button:hover {
   background-color: #0056b3;
+}
+.logout-btn {
+  background-color: #dc3545;
+}
+.logout-btn:hover {
+  background-color: #c82333;
 }
 </style>
