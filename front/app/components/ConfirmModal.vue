@@ -1,6 +1,6 @@
 <template>
   <div v-if="isOpen" class="modal-overlay" @click.self="close">
-    <div class="modal">
+    <div class="confirm-modal">
       <h3>{{ title }}</h3>
       <p>{{ message }}</p>
       <div class="modal-actions">
@@ -12,7 +12,6 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 
 defineProps({
   isOpen: {
@@ -54,7 +53,7 @@ function close() {
   z-index: 1000;
 }
 
-.modal {
+.confirm-modal {
   background-color: #fff;
   border-radius: 0.75rem;
   padding: 1.5rem;
