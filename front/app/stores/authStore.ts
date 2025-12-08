@@ -7,9 +7,17 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   actions: {
-    login(token: string) {
+    async login(token: string) {
       localStorage.setItem('authToken', token);
       this.isAuthenticated = true;
+      
+      // Fetch user data after login
+      try {
+        const { fetchUser } = useAuth();
+        await fetchUser();
+      } catch (error) {
+        console.error('Failed to fetch user after login:', error);
+      }
     },
 
     logout() {
