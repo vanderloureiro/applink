@@ -53,5 +53,20 @@ export const linkStore = defineStore('links', {
         throw error;
       }
     },
+
+    async deleteLink(id: string) {
+      const config = useRuntimeConfig();
+      const baseURL = config.public.apiBase || '/';
+      
+      try {
+        await $fetch(`${baseURL}/api/links/${id}`, {
+          method: 'DELETE',
+        });
+        await this.fetchLinks();
+      } catch (error) {
+        console.error('Error deleting link:', error);
+        throw error;
+      }
+    },
   },
 });

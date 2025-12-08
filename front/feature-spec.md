@@ -1,26 +1,33 @@
-# Página de perfil
+# Excluir link
 
 ## Projeto
 
 Projeto Nuxt 4.0.0
 
-## Funcionalidade - Página de perfil
+## Funcionalidade - Excluir link
 
-Quando usuário logado, exibir o nome no cabeçalho e quando clicar, direcionar para outra página, sendo essa a página de perfil do usuário.
+Como um usuário, quero poder excluir um link salvo por mim
 
+## Contexto
+
+Na minha listagem de links, quero ter um botão em cada card de link com a opção de excluir, quando excluo, o link some da minha listagem
 
 ### Detalhes
 
-- O header contido em app/components/Header.vue deve exibir o nome do usuário logado no botão com link
-- os dados de usuário serão buscados em uma chamada REST GET para o path /api/users/me
-- preencha o conteúdo na página app/pages/profile.vue
-  - Os campos de nome e email são preenchidos automaticamente com os dados do usuário autenticado
-  - O campo email é desabilitado (read-only)
-- coloque no final da página a opção de "sair"
-- o botão de "sair" deve fazer o comportamento atual de deslogar presente em app/components/Header.vue
-- use os estilos visuais de CSS iguais aos presentes em app/pages/index.vue e os componentes usado por ele
+- O botão será um ícone de "X" no canto superior direito de cada card de link
+- Ao clicar no botão, um modal de confirmação deve aparecer
+- A requisição para o backend só será feita após confirmação clicando no botão do modal
+- A request será na estrutura do arquivo linkStore.ts, chamando um novo endpoint
+- chamada do endpoint será
+```
+$fetch(`${baseURL}/api/links/{id}`, {
+          method: 'DELETE',...
+```
+-- após deletado, o card deve sumir da listagem
+-- o passo anterior pode ser feito fazendo a mesma consulta novamente e sobrepondo
 
 ### Implementação
 
-- `useAuth.ts`: Composable que gerencia autenticação com tipagem TypeScript
-- `profile.vue`: Página de perfil que carrega dados do usuário em `onMounted` e oferece logout
+- usar o arquivo linkStore.ts para funcionalidade
+- o estilo do modal deve seguir o padrão do projeto como o contido em #profile.vue
+- o card de link é o já existente #components/LinkItem.vue

@@ -1,18 +1,81 @@
 <script setup lang="ts">
 import type { Link } from '~/types/Link';
-const props = defineProps<{ link: Link }>()
+import { ref } from 'vue';
+import { linkStore } from '@/stores/linkStore';
+import ConfirmModal from './ConfirmModal.vue';
+
+const props = defineProps<{ link: Link }>();
+
+const store = linkStore();
+const showModal = ref(false);
+
+function openModal() {
+  showModal.value = true;
+}
+
+function closeModal() {
+  showModal.value = false;
+}
+
+async function handleDelete() {
+  try {
+    await store.deleteLink(props.link.id);
+    closeModal();
+  } catch (error) {
+    console.error('Failed to delete link:', error);
+    alert('Erro ao excluir link');
+  }
+}
 </script>
 
 <template>
-  <li class="item mb-2">
-    <h3> {{ props.link.title }}</h3>
-    <a :href="props.link.url" target="_blank" class="text-green-600 font-semibold">
-      {{ props.link.url }}
-    </a>
-    <p class="text-sm text-gray-600">{{ props.link.description }}</p>
-  </li>
+  <div class="link-item">
+    <button class="delete-btn" @click="openModal">✕</button>
+    <li class="item mb-2">
+      <h3> {{ props.link.title }}</h3>
+      <a :href="props.link.url" target="_blank" class="text-green-600 font-semibold">
+        {{ props.link.url }}
+      </a>
+      <p class="text-sm text-gray-600">{{ props.link.description }}</p>
+    </li>
+  </div>
+  <ConfirmModal 
+    :isOpen="showModal" 
+    title="Excluir link"
+    message="Tem certeza que deseja excluir este link?"
+    @confirm="handleDelete"
+    @close="closeModal"
+  />
 </template>
+
 <style scoped>
+.link-item {
+  position: relative;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background-color: #fff;
+  color: #b38f8f;
+  border: none;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: background-color 0.2s;
+  padding: 0;
+}
+
+.delete-btn:hover {
+  color: #c82333;
+}
+
 .item {
   border-radius: 0.75rem;
   --tw-bg-opacity: 1;
