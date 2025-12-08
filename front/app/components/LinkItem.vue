@@ -58,7 +58,7 @@ async function handleDelete() {
   top: 0.75rem;
   right: 0.75rem;
   background-color: #fff;
-  color: #292727;
+  color: #b38f8f;
   border: none;
   border-radius: 50%;
   width: 2rem;
