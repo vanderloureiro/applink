@@ -11,6 +11,7 @@ interface UserResponse {
 const user = ref<UserResponse | null>(null);
 
 export const useAuth = () => {
+  const auth = useAuthStore();
     
   const fetchUser = async () => {
     const config = useRuntimeConfig();
@@ -29,6 +30,7 @@ export const useAuth = () => {
   const logout = async () => {
     // ...existing logout logic...
     user.value = null;
+    auth.logout();
     navigateTo('/');
   };
 

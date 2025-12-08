@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between align-items-center p-3">
         <div class="logo">
           <nuxt-link to="/">
-          <h1>ibira</h1>
+          <h1>ibira.cc</h1>
         </nuxt-link>
         </div>
         <div class="profile">
