@@ -1,6 +1,6 @@
 <template>
     <footer class="footer">
-        <p>&copy; 2025 ibira. All rights reserved.</p>
+        <p>&copy; 2025 ibira.cc. All rights reserved.</p>
         <p>
             <nuxt-link to="/use-terms" class="terms-link">Terms of Use</nuxt-link> | 
             <nuxt-link to="/privacy-policy" class="terms-link">Privacy Policy</nuxt-link>

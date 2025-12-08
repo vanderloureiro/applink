@@ -4,16 +4,18 @@
             <div class="d-flex justify-content-between align-items-center p-3">
         <div class="logo">
           <nuxt-link to="/">
-          <h1>ibira</h1>
+          <h1>ibira.cc</h1>
         </nuxt-link>
         </div>
         <div class="profile">
           <nuxt-link v-if="!auth.isAuthenticated" to="/signin">
             <span>Entrar</span>
           </nuxt-link>
-          <nuxt-link v-if="auth.isAuthenticated" to="/signin">
-            <button class="btn-signout" @click="sigout()">Sair</button>
-          </nuxt-link>
+          <div v-if="auth.isAuthenticated" class="user-menu">
+            <nuxt-link :to="`/profile`">
+              <span class="user-name">olá, {{ user?.name }}</span>
+            </nuxt-link>
+          </div>
         </div>
       </div>
         </div>
@@ -23,13 +25,18 @@
 <script setup lang="ts"> 
 import { onMounted } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
+import { useAuth } from '@/composables/useAuth';
 import { useRouter } from 'vue-router';
 
 const auth = useAuthStore();
 const router = useRouter();
+const { user, fetchUser } = useAuth();
 
-onMounted(() => {
+onMounted(async () => {
   auth.checkAuth();
+  if (auth.isAuthenticated) {
+    await fetchUser();
+  }
 });
 
 function sigout() {
@@ -52,6 +59,19 @@ header {
   font-family: 'Inter', sans-serif;
   font-size: 1.25rem;
 }
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.user-name {
+  color: #464646;
+  font-weight: 500;
+  cursor: pointer;
+}
+.user-name:hover {
+  color: #19a311cf;
+}
 .btn-signout {
   background-color: #fff;
   color: #464646;
@@ -59,6 +79,9 @@ header {
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
+}
+.btn-signout:hover {
+  background-color: #f0f0f0;
 }
 a {
   text-decoration: none;
