@@ -9,7 +9,8 @@ export const linkStore = defineStore('links', {
     pageSize: 20,
     totalPages: 0,
     totalElements: 0,
-    isEmpty: false
+    isEmpty: false,
+    fetching: false,
   }),
 
   actions: {
@@ -25,6 +26,7 @@ export const linkStore = defineStore('links', {
       const url = `${baseURL}/api/links?${params}`;
 
       try {
+        this.fetching = true;
         const res = await $fetch<PaginatedResponse>(url);
         this.links = res.content;
         this.pageNumber = res.pageNumber;
@@ -32,8 +34,10 @@ export const linkStore = defineStore('links', {
         this.totalPages = res.totalPage;
         this.totalElements = res.totalElements;
         this.isEmpty = res.empty;
+        this.fetching = false;
       } catch (error) {
         console.error('Error fetching links:', error);
+        this.fetching = false;
         throw error;
       }
     },
@@ -59,12 +63,15 @@ export const linkStore = defineStore('links', {
       const baseURL = config.public.apiBase || '/';
       
       try {
+        this.fetching = true;
         await $fetch(`${baseURL}/api/links/${id}`, {
           method: 'DELETE',
         });
         await this.fetchLinks();
+        this.fetching = false;
       } catch (error) {
         console.error('Error deleting link:', error);
+        this.fetching = false;
         throw error;
       }
     },
