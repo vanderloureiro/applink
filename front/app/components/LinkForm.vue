@@ -31,6 +31,9 @@ async function handleSubmit() {
           <label for="description">Descrição</label><br>
           <textarea v-model="form.description" name="description" id="description" placeholder="Uma descrição curta"></textarea>
         </div>
+        <div class="d-flex justify-content-center mb-3" v-if="sending">
+            <LoadingSpinner/>
+          </div>
         <button class="btn button-primary btn-save" :disabled="sending">Salvar</button>
       
       </form>

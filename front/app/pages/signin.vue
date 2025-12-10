@@ -30,8 +30,11 @@
               <nuxt-link to="/privacy-policy" class="terms-link">Privacy Policy</nuxt-link>.
             </label>
           </div>
-          <button :disabled="!acceptTerms" v-if="isOnboardingUser" class="btn button-primary btn-save" @click="create">Create</button>
-          <button v-if="!isOnboardingUser" class="btn button-primary btn-save" @click="sendEmail">Send</button>
+          <div class="d-flex justify-content-center mb-3" v-if="loading">
+            <LoadingSpinner/>
+          </div>
+          <button :disabled="!acceptTerms || loading" v-if="isOnboardingUser" class="btn button-primary btn-save" @click="create">Create</button>
+          <button :disabled="loading" v-if="!isOnboardingUser" class="btn button-primary btn-save" @click="sendEmail">Send</button>
         </div>
         <div v-else>
           <h2>Authorization code</h2>
@@ -46,7 +49,10 @@
               @keyup.enter="verifyCode"
             />
           </div>
-          <button class="btn button-primary btn-save" @click="verifyCode">Verify</button>
+          <div class="d-flex justify-content-center mb-3" v-if="loading">
+            <LoadingSpinner/>
+          </div>
+          <button :disabled="loading" class="btn button-primary btn-save" @click="verifyCode">Verify</button>
         </div>
       </div>
     </div>
@@ -64,6 +70,7 @@ const acceptTerms = ref(false);
 const isOnboardingUser = ref(false);
 const maintenance = ref(false);
 const emailSent = ref(false);
+const loading = ref(false);
 const router = useRouter();
 
 const config = useRuntimeConfig();
@@ -74,6 +81,7 @@ const auth = useAuthStore();
 async function create() {
   if (acceptTerms.value) {
     try {
+      loading.value = true;
       const response = await fetch(`${baseURL}/api/users`, {
         method: 'POST',
         headers: {
@@ -87,10 +95,13 @@ async function create() {
         emailSent.value = true;
         isOnboardingUser.value = false;
         sendEmail(); 
+        loading.value = false;
       } else if (response.status === 501) {
         maintenance.value = true;
+        loading.value = false;
       } else{
         console.log('Failed to create user. Status:', response.status);
+        loading.value = false;
       }
     } catch (error) {
       console.error('Error occurred while creating user:', error);
@@ -103,6 +114,7 @@ async function create() {
 async function sendEmail() {
   if (email.value) {
     try {
+      loading.value = true;
       const response = await fetch(`${baseURL}/api/auth/sign-in`, {
         method: 'POST',
         headers: {
@@ -114,11 +126,14 @@ async function sendEmail() {
       if (response.ok) {
         console.log('Email sent successfully:', email.value);
         emailSent.value = true;
+        loading.value = false;
       } else if (response.status === 401) {
         console.log('Onboarding user.');
         isOnboardingUser.value = true;
+        loading.value = false;
       } else {
         console.log('Failed to send email. Status:', response.status);
+        loading.value = false;
       }
     } catch (error) {
       console.error('Error occurred while sending email:', error);
@@ -131,6 +146,7 @@ async function sendEmail() {
 async function verifyCode() {
   if (code.value.length === 6) {
     try {
+      loading.value = true;
       const response = await fetch(`${baseURL}/api/auth/validate`, {
         method: 'POST',
         headers: {
@@ -142,12 +158,15 @@ async function verifyCode() {
       if (response.ok) {
         const data = await response.json();
         auth.login(data.token); // Usar a store para fazer login
+        loading.value = false;
         router.push('/');
       } else if (response.status === 401) {
         console.error('Onboarding user.');
         isOnboardingUser.value = true;
+        loading.value = false;
       } else {
         console.error('Failed to validate code. Status:', response.status);
+        loading.value = false;
       }
     } catch (error) {
       console.error('Error occurred while validating code:', error);

@@ -11,6 +11,7 @@ const searchQuery = ref('');
 
 const links = computed(() => store.links);
 const totalPages = computed(() => store.totalPages);
+const loading = computed(() => store.fetching);
 
 onMounted(() => {
   store.fetchLinks();
@@ -55,7 +56,10 @@ function handleSearchInput(query: string) {
         placeholder="Search links..."
         class="search-bar"
       />
-      <link-list :links="links" />
+      <div class="d-flex justify-content-center mb-3" v-if="loading">
+        <LoadingSpinner :size="50" :stroke="5"/>
+      </div>
+      <link-list :links="links" v-if="!loading" />
       <Pagination 
         :totalPages="totalPages" 
         @page-change="handlePageChange" 
