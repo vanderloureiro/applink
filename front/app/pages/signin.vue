@@ -25,7 +25,9 @@
           <div class="field accept-terms" v-if="isOnboardingUser">
             <label>
               <input type="checkbox" name="acceptTerms" v-model="acceptTerms" />
-              I accept the terms and conditions
+              I have read and agree to the 
+              <nuxt-link to="/use-terms" class="terms-link">Terms of Use</nuxt-link> and 
+              <nuxt-link to="/privacy-policy" class="terms-link">Privacy Policy</nuxt-link>.
             </label>
           </div>
           <button :disabled="!acceptTerms" v-if="isOnboardingUser" class="btn button-primary btn-save" @click="create">Create</button>
@@ -77,7 +79,7 @@ async function create() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email.value }),
+        body: JSON.stringify({ email: email.value, termsAccepted: acceptTerms.value }),
       });
 
       if (response.ok) {

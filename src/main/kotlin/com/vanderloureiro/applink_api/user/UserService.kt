@@ -1,8 +1,10 @@
 package com.vanderloureiro.applink_api.user
 
+import com.vanderloureiro.applink_api.common.exception.UnauthorizedException
+import com.vanderloureiro.applink_api.user.dto.CreateUserRequest
 import com.vanderloureiro.applink_api.user.exception.EmailAlreadyUsedException
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 import kotlin.jvm.optionals.getOrNull
 import kotlin.random.Random
 
@@ -14,7 +16,12 @@ final class UserService(
 
     fun getByEmail(email: String): User? = userRepository.findByEmail(email)
 
-    fun create(user: User) {
+    fun create(request: CreateUserRequest) {
+        if (!request.termsAccepted) {
+            throw UnauthorizedException()
+        }
+        
+        val user = request.toDomain()
         val maybeUser = userRepository.findByEmail(user.email)
         if (maybeUser != null) {
             throw EmailAlreadyUsedException()
