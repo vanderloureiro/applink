@@ -30,7 +30,7 @@ class EmailService(
         val mail =
             MailtrapMail
                 .builder()
-                .from(Address(recipient, "Ibira"))
+                .from(Address(recipient, "Ibira.cc"))
                 .to(List.of<Address?>(Address(email)))
                 .replyTo(Address(recipient, "Ibira"))
                 .subject("Ibira - Entrar")
