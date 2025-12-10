@@ -22,7 +22,7 @@ class AuthService(
     private val emailService: EmailService,
 ) {
     private val logger = KotlinLogging.logger {}
-    
+
     fun generate(email: String) {
         val user = userService.getByEmail(email) ?: throw UnauthorizedException()
         generate(user.id!!)
@@ -34,6 +34,14 @@ class AuthService(
         val user = userService.get(userId)
         if (user != null) {
             val authCode = AuthCode(userId = userId, encoded, updatedAt = OffsetDateTime.now())
+            val maybeAuthCode = repository.findById(userId);
+            if (maybeAuthCode.isPresent && maybeAuthCode.get().updatedAt!!.isAfter(
+                    OffsetDateTime.now().minusMinutes(2)
+                )
+            ) {
+                logger.info { "Last authcode sent still within the deadline" }
+                return
+            }
             repository.save(authCode)
             logger.info { code }
             emailService.sendAuthCodeEmail(code, user.name, user.email)
