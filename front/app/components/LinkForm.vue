@@ -3,7 +3,7 @@ import { linkStore } from '@/stores/linkStore'
 
 const store = linkStore()
 
-const form = reactive({ title: '', url: '', description: '' })
+const form = reactive({ title: '', url: '', description: '', shortenLink: false })
 const sending = ref(false)
 
 async function handleSubmit() {
@@ -30,6 +30,10 @@ async function handleSubmit() {
         <div class="field">
           <label for="description">Descrição</label><br>
           <textarea v-model="form.description" name="description" id="description" placeholder="Uma descrição curta"></textarea>
+        </div>
+        <div class="field-checkbox mb-4">
+          <input type="checkbox" name="shortenLink" v-model="form.shortenLink" />
+          <label>Encurtar link</label>
         </div>
         <div class="d-flex justify-content-center mb-3" v-if="sending">
             <LoadingSpinner/>
@@ -66,6 +70,43 @@ h2 {
   margin-bottom: 1em;
   font-weight: 500;
   font-size: 0.875rem;
+}
+.field-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.field-checkbox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 0.125rem solid #ccc;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+}
+
+.field-checkbox input[type="checkbox"]:checked {
+  background-color: #19a311cf;
+  border-color: #19a311cf;
+}
+
+.field-checkbox input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 label {
   font-family: 'Inter', sans-serif;
