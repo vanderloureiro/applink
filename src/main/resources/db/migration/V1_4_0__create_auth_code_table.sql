@@ -1,5 +1,0 @@
-CREATE TABLE auth_code (
-    user_id UUID PRIMARY KEY,
-    code TEXT NOT NULL,
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
-);

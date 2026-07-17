@@ -1,7 +1,0 @@
-CREATE TABLE links (
-    id UUID PRIMARY KEY,
-    title TEXT NOT NULL,
-    path TEXT NOT NULL,
-    description TEXT,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
