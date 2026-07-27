@@ -1,16 +1,242 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Title }}</title>
+    <meta name="description" content="Save, organize, and find your favorite links.">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <main>
-        <h1>Bem-vindo ao ibira</h1>
-        <p>Um repositório de links e conteúdos interessantes.</p>
-        <a class="button" href="https://github.com/applink/ibira" target="_blank" rel="noopener noreferrer">Ver no GitHub</a>
+    <header class="site-header">
+        <a href="/" class="brand" aria-label="applink home">
+            <span class="brand-mark"><i data-lucide="link-2"></i></span>
+            <span>applink</span>
+        </a>
+
+        <button class="mobile-menu" type="button" aria-label="Open navigation" aria-expanded="false">
+            <i data-lucide="menu"></i>
+        </button>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="/" class="active">Home</a>
+            <a href="#links">Collections</a>
+            <a href="#tags">Tags</a>
+            <a href="#archive">Archive</a>
+        </nav>
+
+        <div class="header-actions">
+            <label class="header-search">
+                <span class="sr-only">Search saved links</span>
+                <i data-lucide="search"></i>
+                <input type="search" placeholder="Search your saved links...">
+            </label>
+            <button class="icon-button" type="button" aria-label="Notifications">
+                <i data-lucide="bell"></i>
+            </button>
+            <button class="avatar" type="button" aria-label="Open profile menu">
+                <span aria-hidden="true">👩🏻</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        <aside class="save-panel" aria-labelledby="save-title">
+            <h1 id="save-title">Save a New Link</h1>
+            <form>
+                <label class="field">
+                    <span>Title</span>
+                    <input type="text" placeholder="Enter a descriptive title">
+                </label>
+
+                <label class="field">
+                    <span>Link</span>
+                    <textarea rows="4" placeholder="https://example.com/very/long/link/that&#10;you/want/to/save/for/later/reference&#10;and/come/back/to"></textarea>
+                </label>
+
+                <label class="field">
+                    <span>Description</span>
+                    <textarea rows="3" placeholder="Add a short description of this link..."></textarea>
+                </label>
+
+                <label class="field">
+                    <span>Tags</span>
+                    <input type="text" placeholder="e.g., productivity, design, tools">
+                    <small>Add tags separated by commas</small>
+                </label>
+
+                <fieldset class="visibility-field">
+                    <legend>Visibility</legend>
+                    <div class="visibility-options">
+                        <label>
+                            <input type="radio" name="visibility" value="public" checked>
+                            <span><i data-lucide="globe-2"></i> Public</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="visibility" value="private">
+                            <span><i data-lucide="lock"></i> Private</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <button class="save-button" type="submit">
+                    <i data-lucide="bookmark"></i>
+                    Save Link
+                </button>
+            </form>
+        </aside>
+
+        <section class="links-column" id="links" aria-labelledby="links-title">
+            <div class="content-search">
+                <label>
+                    <span class="sr-only">Search saved links</span>
+                    <i data-lucide="search"></i>
+                    <input type="search" placeholder="Search your saved links...">
+                </label>
+                <button type="button" aria-label="Filter links"><i data-lucide="list-filter"></i></button>
+            </div>
+
+            <div class="list-toolbar">
+                <h2 id="links-title">12 links</h2>
+                <button type="button">Sort by: <strong>Newest</strong> <i data-lucide="chevron-down"></i></button>
+            </div>
+
+            <div class="links-list">
+                <article class="link-row">
+                    <span class="link-type public"><i data-lucide="globe-2"></i></span>
+                    <div class="link-copy">
+                        <h3>MDN Web Docs</h3>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web">https://developer.mozilla.org/en-US/docs/Web</a>
+                        <p>Resources for developers, by developers. Documentation for web technologies<br class="wide-only"> including HTML, CSS, JavaScript, and more.</p>
+                        <div class="tags"><span>documentation</span><span>web development</span><span>reference</span></div>
+                    </div>
+                    <div class="row-side">
+                        <span class="status public"><i data-lucide="globe-2"></i> Public</span>
+                        <div class="row-actions">
+                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
+                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
+                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="link-row">
+                    <span class="link-type"><i data-lucide="lock"></i></span>
+                    <div class="link-copy">
+                        <h3>OpenAI API Documentation</h3>
+                        <a href="https://platform.openai.com/docs/introduction">https://platform.openai.com/docs/introduction</a>
+                        <p>Official documentation for the OpenAI API, including guides and references<br class="wide-only"> for models, endpoints, and best practices.</p>
+                        <div class="tags"><span>api</span><span>openai</span><span>documentation</span></div>
+                    </div>
+                    <div class="row-side">
+                        <span class="status"><i data-lucide="lock"></i> Private</span>
+                        <div class="row-actions">
+                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
+                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
+                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="link-row">
+                    <span class="link-type"><i data-lucide="lock"></i></span>
+                    <div class="link-copy">
+                        <h3>Product Roadmap – Q2 2024</h3>
+                        <a href="https://docs.google.com/spreadsheets/d/1A2b3C4d5EfG6Hi7j8Kl9mN0opQrsTuvWxYz12">https://docs.google.com/spreadsheets/d/1A2b3C4d5EfG6Hi7j8Kl9mN0opQrsTuvWxYz12...</a>
+                        <p>Quarterly product roadmap with initiatives, timelines, and owners.</p>
+                        <div class="tags"><span>product</span><span>roadmap</span><span>planning</span></div>
+                    </div>
+                    <div class="row-side">
+                        <span class="status"><i data-lucide="lock"></i> Private</span>
+                        <div class="row-actions">
+                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
+                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
+                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="link-row">
+                    <span class="link-type public"><i data-lucide="globe-2"></i></span>
+                    <div class="link-copy">
+                        <h3>How to Build a Design System</h3>
+                        <a href="https://www.smashingmagazine.com/2021/04/design-system-components/">https://www.smashingmagazine.com/2021/04/design-system-components/</a>
+                        <p>A practical guide to creating scalable design systems with reusable components.</p>
+                        <div class="tags"><span>design</span><span>ui/ux</span><span>design system</span></div>
+                    </div>
+                    <div class="row-side">
+                        <span class="status public"><i data-lucide="globe-2"></i> Public</span>
+                        <div class="row-actions">
+                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
+                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
+                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="link-row">
+                    <span class="link-type"><i data-lucide="lock"></i></span>
+                    <div class="link-copy">
+                        <h3>Personal Finances – 2024</h3>
+                        <a href="https://docs.google.com/spreadsheets/d/9XyZ8e7Fgh6I1JkL3MnOpQrStUvWxYz12A3b">https://docs.google.com/spreadsheets/d/9XyZ8e7Fgh6I1JkL3MnOpQrStUvWxYz12A3b...</a>
+                        <p>My budget, investments, and monthly expense tracking.</p>
+                        <div class="tags"><span>finance</span><span>budget</span><span>tracking</span></div>
+                    </div>
+                    <div class="row-side">
+                        <span class="status"><i data-lucide="lock"></i> Private</span>
+                        <div class="row-actions">
+                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
+                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
+                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <nav class="pagination" aria-label="Pagination">
+                <button type="button"><i data-lucide="chevron-left"></i> Previous</button>
+                <button type="button" class="current">1</button>
+                <button type="button">2</button>
+                <button type="button">3</button>
+                <span>...</span>
+                <button type="button">5</button>
+                <button type="button" class="next">Next <i data-lucide="chevron-right"></i></button>
+            </nav>
+        </section>
     </main>
+
+    <script>
+        lucide.createIcons({ attrs: { "stroke-width": 1.8 } });
+
+        const searches = document.querySelectorAll('input[type="search"]');
+        searches.forEach((search) => search.addEventListener("input", (event) => {
+            searches.forEach((other) => {
+                if (other !== event.target) other.value = event.target.value;
+            });
+            const query = event.target.value.trim().toLowerCase();
+            document.querySelectorAll(".link-row").forEach((row) => {
+                row.hidden = query && !row.textContent.toLowerCase().includes(query);
+            });
+        }));
+
+        document.querySelectorAll(".copy-link").forEach((button) => {
+            button.addEventListener("click", async () => {
+                const url = button.closest(".link-row").querySelector("a").href;
+                await navigator.clipboard?.writeText(url);
+                const label = button.querySelector("span");
+                if (label) {
+                    label.textContent = "Copied";
+                    window.setTimeout(() => label.textContent = "Copy", 1200);
+                }
+            });
+        });
+
+        const menu = document.querySelector(".mobile-menu");
+        menu.addEventListener("click", () => {
+            const open = document.body.classList.toggle("nav-open");
+            menu.setAttribute("aria-expanded", String(open));
+        });
+    </script>
 </body>
 </html>

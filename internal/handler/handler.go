@@ -38,7 +38,7 @@ func Run() error {
 		data := struct {
 			Title string
 		}{
-			Title: "ibira",
+			Title: "applink",
 		}
 
 		if err := tpl.ExecuteTemplate(w, "index.html", data); err != nil {
@@ -47,6 +47,6 @@ func Run() error {
 		}
 	})
 
-	log.Println("starting ibira on http://localhost:8080")
+	log.Println("starting applink on http://localhost:8080")
 	return http.ListenAndServe(":8080", mux)
 }
