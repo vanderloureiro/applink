@@ -1,178 +1,242 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Title }}</title>
-    <meta name="description" content="Organize e encontre seus links favoritos.">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            200: '#bbf7d0',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534'
-                        }
-                    },
-                    boxShadow: {
-                        soft: '0 12px 30px rgba(15, 23, 42, 0.06)'
-                    }
-                }
-            }
-        }
-    </script>
+    <meta name="description" content="Save, organize, and find your favorite links.">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
-    <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-            <a href="/" class="flex items-center gap-3" aria-label="Página inicial do applink">
-                <span class="grid size-9 place-items-center rounded-full bg-brand-500 text-white shadow-sm">
-                    <i data-lucide="link-2" class="size-5"></i>
-                </span>
-                <span class="text-xl font-bold tracking-tight text-brand-800">applink</span>
-            </a>
+<body>
+    <header class="site-header">
+        <a href="/" class="brand" aria-label="applink home">
+            <span class="brand-mark"><i data-lucide="link-2"></i></span>
+            <span>applink</span>
+        </a>
 
-            <nav class="hidden items-center gap-7 text-sm font-medium text-slate-700 md:flex" aria-label="Navegação principal">
-                <a href="#links" class="flex items-center gap-2 transition hover:text-brand-700">
-                    <i data-lucide="bookmark" class="size-4"></i> Meus links
-                </a>
-                <a href="#" class="flex items-center gap-2 transition hover:text-brand-700">
-                    <i data-lucide="tag" class="size-4"></i> Tags
-                </a>
-                <a href="#" class="flex items-center gap-2 transition hover:text-brand-700">
-                    <i data-lucide="settings" class="size-4"></i> Configurações
-                </a>
-                <button class="flex items-center gap-2" aria-label="Abrir menu do usuário">
-                    <span class="grid size-9 place-items-center rounded-full border border-brand-200 bg-brand-50 font-semibold text-brand-800">V</span>
-                    <i data-lucide="chevron-down" class="size-4 text-slate-500"></i>
-                </button>
-            </nav>
+        <button class="mobile-menu" type="button" aria-label="Open navigation" aria-expanded="false">
+            <i data-lucide="menu"></i>
+        </button>
 
-            <button class="grid size-10 place-items-center rounded-lg text-slate-600 hover:bg-slate-100 md:hidden" aria-label="Abrir menu">
-                <i data-lucide="menu" class="size-6"></i>
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="/" class="active">Home</a>
+            <a href="#links">Collections</a>
+            <a href="#tags">Tags</a>
+            <a href="#archive">Archive</a>
+        </nav>
+
+        <div class="header-actions">
+            <label class="header-search">
+                <span class="sr-only">Search saved links</span>
+                <i data-lucide="search"></i>
+                <input type="search" placeholder="Search your saved links...">
+            </label>
+            <button class="icon-button" type="button" aria-label="Notifications">
+                <i data-lucide="bell"></i>
+            </button>
+            <button class="avatar" type="button" aria-label="Open profile menu">
+                <span aria-hidden="true">👩🏻</span>
             </button>
         </div>
     </header>
 
-    <main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <section aria-labelledby="search-title">
-            <h1 id="search-title" class="sr-only">Encontre seus links</h1>
-            <label class="group flex h-14 items-center gap-3 rounded-xl border border-brand-500 bg-white px-4 shadow-sm ring-brand-100 transition focus-within:ring-4">
-                <i data-lucide="search" class="size-5 shrink-0 text-slate-600"></i>
-                <input type="search" placeholder="Busque por título, descrição, URL ou tag..." class="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-slate-400">
-                <kbd class="hidden rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-500 sm:block">/</kbd>
-            </label>
-            <p class="mt-3 text-sm text-slate-500">Dica: tente buscar por “design”, “documentação” ou um site específico.</p>
-        </section>
-
-        <section class="mt-7 rounded-xl border border-brand-200 bg-white p-5 shadow-soft sm:p-6" aria-labelledby="new-link-title">
-            <div class="flex items-center gap-2">
-                <i data-lucide="chevron-up" class="size-4 text-brand-800"></i>
-                <h2 id="new-link-title" class="font-semibold">Salvar novo link</h2>
-            </div>
-
-            <form class="mt-5 grid gap-5 lg:grid-cols-[1.05fr_1.05fr_.9fr_auto] lg:items-end">
-                <label class="block">
-                    <span class="mb-2 block text-sm font-semibold">Título</span>
-                    <input type="text" placeholder="Digite um título descritivo" class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-100">
+    <main class="page-shell">
+        <aside class="save-panel" aria-labelledby="save-title">
+            <h1 id="save-title">Save a New Link</h1>
+            <form>
+                <label class="field">
+                    <span>Title</span>
+                    <input type="text" placeholder="Enter a descriptive title">
                 </label>
-                <label class="block">
-                    <span class="mb-2 block text-sm font-semibold">Link / URL</span>
-                    <input type="url" placeholder="https://exemplo.com" class="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-100">
+
+                <label class="field">
+                    <span>Link</span>
+                    <textarea rows="4" placeholder="https://example.com/very/long/link/that&#10;you/want/to/save/for/later/reference&#10;and/come/back/to"></textarea>
                 </label>
-                <fieldset>
-                    <legend class="mb-2 text-sm font-semibold">Visibilidade</legend>
-                    <div class="grid h-11 grid-cols-2 overflow-hidden rounded-lg border border-slate-300">
-                        <label class="flex cursor-pointer items-center justify-center gap-2 bg-brand-50 text-sm font-medium text-brand-700">
-                            <input type="radio" name="visibility" value="public" checked class="sr-only">
-                            <i data-lucide="globe-2" class="size-4"></i> Público
+
+                <label class="field">
+                    <span>Description</span>
+                    <textarea rows="3" placeholder="Add a short description of this link..."></textarea>
+                </label>
+
+                <label class="field">
+                    <span>Tags</span>
+                    <input type="text" placeholder="e.g., productivity, design, tools">
+                    <small>Add tags separated by commas</small>
+                </label>
+
+                <fieldset class="visibility-field">
+                    <legend>Visibility</legend>
+                    <div class="visibility-options">
+                        <label>
+                            <input type="radio" name="visibility" value="public" checked>
+                            <span><i data-lucide="globe-2"></i> Public</span>
                         </label>
-                        <label class="flex cursor-pointer items-center justify-center gap-2 border-l border-slate-300 text-sm text-slate-700 hover:bg-slate-50">
-                            <input type="radio" name="visibility" value="private" class="sr-only">
-                            <i data-lucide="lock" class="size-4"></i> Privado
+                        <label>
+                            <input type="radio" name="visibility" value="private">
+                            <span><i data-lucide="lock"></i> Private</span>
                         </label>
                     </div>
                 </fieldset>
-                <button type="submit" class="flex h-11 items-center justify-center gap-2 rounded-lg bg-brand-700 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800 focus:outline-none focus:ring-4 focus:ring-brand-200">
-                    <i data-lucide="bookmark-plus" class="size-4"></i> Salvar link
+
+                <button class="save-button" type="submit">
+                    <i data-lucide="bookmark"></i>
+                    Save Link
                 </button>
             </form>
-            <p class="mt-4 text-sm text-slate-500">Adicione um link que você deseja guardar e encontrar mais tarde.</p>
-        </section>
+        </aside>
 
-        <section id="links" class="mt-7" aria-labelledby="links-title">
-            <div class="mb-4 flex items-center justify-between">
-                <h2 id="links-title" class="flex items-center gap-2 text-sm font-semibold">
-                    <i data-lucide="bookmark" class="size-4 text-slate-600"></i> 6 links
-                </h2>
-                <button class="flex items-center gap-2 text-sm font-medium text-slate-700">Ordenar por: <strong>Mais recentes</strong> <i data-lucide="chevron-down" class="size-4"></i></button>
+        <section class="links-column" id="links" aria-labelledby="links-title">
+            <div class="content-search">
+                <label>
+                    <span class="sr-only">Search saved links</span>
+                    <i data-lucide="search"></i>
+                    <input type="search" placeholder="Search your saved links...">
+                </label>
+                <button type="button" aria-label="Filter links"><i data-lucide="list-filter"></i></button>
             </div>
 
-            <div class="space-y-2">
-                <article class="link-card">
-                    <span class="link-icon link-icon-public"><i data-lucide="globe-2"></i></span>
-                    <div class="min-w-0 flex-1">
-                        <h3 class="truncate font-semibold">MDN Web Docs</h3>
-                        <a href="https://developer.mozilla.org/" class="block truncate text-sm font-medium text-brand-700">https://developer.mozilla.org/</a>
-                        <p class="mt-1 truncate text-sm text-slate-500">Recursos para desenvolvedores web, incluindo HTML, CSS e JavaScript.</p>
+            <div class="list-toolbar">
+                <h2 id="links-title">12 links</h2>
+                <button type="button">Sort by: <strong>Newest</strong> <i data-lucide="chevron-down"></i></button>
+            </div>
+
+            <div class="links-list">
+                <article class="link-row">
+                    <span class="link-type public"><i data-lucide="globe-2"></i></span>
+                    <div class="link-copy">
+                        <h3>MDN Web Docs</h3>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web">https://developer.mozilla.org/en-US/docs/Web</a>
+                        <p>Resources for developers, by developers. Documentation for web technologies<br class="wide-only"> including HTML, CSS, JavaScript, and more.</p>
+                        <div class="tags"><span>documentation</span><span>web development</span><span>reference</span></div>
                     </div>
-                    <span class="visibility visibility-public"><i data-lucide="globe-2"></i> Público</span>
-                    <div class="link-actions"><button><i data-lucide="copy"></i><span>Copiar</span></button><button><i data-lucide="pencil"></i><span>Editar</span></button><button aria-label="Mais opções"><i data-lucide="ellipsis-vertical"></i></button></div>
+                    <div class="row-side">
+                        <span class="status public"><i data-lucide="globe-2"></i> Public</span>
+                        <div class="row-actions">
+                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
+                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
+                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
                 </article>
 
-                <article class="link-card">
-                    <span class="link-icon"><i data-lucide="lock"></i></span>
-                    <div class="min-w-0 flex-1"><h3 class="truncate font-semibold">Roadmap do produto — 2026</h3><a href="#" class="block truncate text-sm font-medium text-brand-700">https://docs.google.com/spreadsheets/d/1A2b3C...</a><p class="mt-1 truncate text-sm text-slate-500">Planejamento trimestral com iniciativas, prazos e responsáveis.</p></div>
-                    <span class="visibility"><i data-lucide="lock"></i> Privado</span>
-                    <div class="link-actions"><button><i data-lucide="copy"></i><span>Copiar</span></button><button><i data-lucide="pencil"></i><span>Editar</span></button><button aria-label="Mais opções"><i data-lucide="ellipsis-vertical"></i></button></div>
+                <article class="link-row">
+                    <span class="link-type"><i data-lucide="lock"></i></span>
+                    <div class="link-copy">
+                        <h3>OpenAI API Documentation</h3>
+                        <a href="https://platform.openai.com/docs/introduction">https://platform.openai.com/docs/introduction</a>
+                        <p>Official documentation for the OpenAI API, including guides and references<br class="wide-only"> for models, endpoints, and best practices.</p>
+                        <div class="tags"><span>api</span><span>openai</span><span>documentation</span></div>
+                    </div>
+                    <div class="row-side">
+                        <span class="status"><i data-lucide="lock"></i> Private</span>
+                        <div class="row-actions">
+                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
+                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
+                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
                 </article>
 
-                <article class="link-card">
-                    <span class="link-icon link-icon-public"><i data-lucide="globe-2"></i></span>
-                    <div class="min-w-0 flex-1"><h3 class="truncate font-semibold">Como criar um Design System</h3><a href="#" class="block truncate text-sm font-medium text-brand-700">https://www.smashingmagazine.com/design-system-components/</a><p class="mt-1 truncate text-sm text-slate-500">Um guia prático para criar sistemas escaláveis com componentes reutilizáveis.</p></div>
-                    <span class="visibility visibility-public"><i data-lucide="globe-2"></i> Público</span>
-                    <div class="link-actions"><button><i data-lucide="copy"></i><span>Copiar</span></button><button><i data-lucide="pencil"></i><span>Editar</span></button><button aria-label="Mais opções"><i data-lucide="ellipsis-vertical"></i></button></div>
+                <article class="link-row">
+                    <span class="link-type"><i data-lucide="lock"></i></span>
+                    <div class="link-copy">
+                        <h3>Product Roadmap – Q2 2024</h3>
+                        <a href="https://docs.google.com/spreadsheets/d/1A2b3C4d5EfG6Hi7j8Kl9mN0opQrsTuvWxYz12">https://docs.google.com/spreadsheets/d/1A2b3C4d5EfG6Hi7j8Kl9mN0opQrsTuvWxYz12...</a>
+                        <p>Quarterly product roadmap with initiatives, timelines, and owners.</p>
+                        <div class="tags"><span>product</span><span>roadmap</span><span>planning</span></div>
+                    </div>
+                    <div class="row-side">
+                        <span class="status"><i data-lucide="lock"></i> Private</span>
+                        <div class="row-actions">
+                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
+                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
+                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
                 </article>
 
-                <article class="link-card">
-                    <span class="link-icon link-icon-public"><i data-lucide="globe-2"></i></span>
-                    <div class="min-w-0 flex-1"><h3 class="truncate font-semibold">Expressões Regulares 101</h3><a href="#" class="block truncate text-sm font-medium text-brand-700">https://regex101.com/</a><p class="mt-1 truncate text-sm text-slate-500">Crie, teste e depure regex com resultados e explicações em tempo real.</p></div>
-                    <span class="visibility visibility-public"><i data-lucide="globe-2"></i> Público</span>
-                    <div class="link-actions"><button><i data-lucide="copy"></i><span>Copiar</span></button><button><i data-lucide="pencil"></i><span>Editar</span></button><button aria-label="Mais opções"><i data-lucide="ellipsis-vertical"></i></button></div>
+                <article class="link-row">
+                    <span class="link-type public"><i data-lucide="globe-2"></i></span>
+                    <div class="link-copy">
+                        <h3>How to Build a Design System</h3>
+                        <a href="https://www.smashingmagazine.com/2021/04/design-system-components/">https://www.smashingmagazine.com/2021/04/design-system-components/</a>
+                        <p>A practical guide to creating scalable design systems with reusable components.</p>
+                        <div class="tags"><span>design</span><span>ui/ux</span><span>design system</span></div>
+                    </div>
+                    <div class="row-side">
+                        <span class="status public"><i data-lucide="globe-2"></i> Public</span>
+                        <div class="row-actions">
+                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
+                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
+                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
                 </article>
 
-                <article class="link-card">
-                    <span class="link-icon"><i data-lucide="lock"></i></span>
-                    <div class="min-w-0 flex-1"><h3 class="truncate font-semibold">Finanças pessoais — 2026</h3><a href="#" class="block truncate text-sm font-medium text-brand-700">https://docs.google.com/spreadsheets/d/9XyZ8...</a><p class="mt-1 truncate text-sm text-slate-500">Meu orçamento, investimentos e controle mensal de despesas.</p></div>
-                    <span class="visibility"><i data-lucide="lock"></i> Privado</span>
-                    <div class="link-actions"><button><i data-lucide="copy"></i><span>Copiar</span></button><button><i data-lucide="pencil"></i><span>Editar</span></button><button aria-label="Mais opções"><i data-lucide="ellipsis-vertical"></i></button></div>
-                </article>
-
-                <article class="link-card">
-                    <span class="link-icon link-icon-public"><i data-lucide="globe-2"></i></span>
-                    <div class="min-w-0 flex-1"><h3 class="truncate font-semibold">Documentação da API OpenAI</h3><a href="https://platform.openai.com/docs/" class="block truncate text-sm font-medium text-brand-700">https://platform.openai.com/docs/</a><p class="mt-1 truncate text-sm text-slate-500">Documentação oficial da API OpenAI, incluindo guias e referências.</p></div>
-                    <span class="visibility visibility-public"><i data-lucide="globe-2"></i> Público</span>
-                    <div class="link-actions"><button><i data-lucide="copy"></i><span>Copiar</span></button><button><i data-lucide="pencil"></i><span>Editar</span></button><button aria-label="Mais opções"><i data-lucide="ellipsis-vertical"></i></button></div>
+                <article class="link-row">
+                    <span class="link-type"><i data-lucide="lock"></i></span>
+                    <div class="link-copy">
+                        <h3>Personal Finances – 2024</h3>
+                        <a href="https://docs.google.com/spreadsheets/d/9XyZ8e7Fgh6I1JkL3MnOpQrStUvWxYz12A3b">https://docs.google.com/spreadsheets/d/9XyZ8e7Fgh6I1JkL3MnOpQrStUvWxYz12A3b...</a>
+                        <p>My budget, investments, and monthly expense tracking.</p>
+                        <div class="tags"><span>finance</span><span>budget</span><span>tracking</span></div>
+                    </div>
+                    <div class="row-side">
+                        <span class="status"><i data-lucide="lock"></i> Private</span>
+                        <div class="row-actions">
+                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
+                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
+                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
+                        </div>
+                    </div>
                 </article>
             </div>
 
-            <nav class="mt-6 flex items-center justify-center gap-1" aria-label="Paginação">
-                <button class="pagination-button hidden sm:flex"><i data-lucide="chevron-left"></i> Anterior</button>
-                <button class="pagination-page pagination-active">1</button><button class="pagination-page">2</button><button class="pagination-page">3</button><span class="px-2 text-slate-400">…</span><button class="pagination-page">5</button>
-                <button class="pagination-button">Próxima <i data-lucide="chevron-right"></i></button>
+            <nav class="pagination" aria-label="Pagination">
+                <button type="button"><i data-lucide="chevron-left"></i> Previous</button>
+                <button type="button" class="current">1</button>
+                <button type="button">2</button>
+                <button type="button">3</button>
+                <span>...</span>
+                <button type="button">5</button>
+                <button type="button" class="next">Next <i data-lucide="chevron-right"></i></button>
             </nav>
         </section>
     </main>
 
-    <script>lucide.createIcons({ attrs: { 'stroke-width': 1.8 } });</script>
+    <script>
+        lucide.createIcons({ attrs: { "stroke-width": 1.8 } });
+
+        const searches = document.querySelectorAll('input[type="search"]');
+        searches.forEach((search) => search.addEventListener("input", (event) => {
+            searches.forEach((other) => {
+                if (other !== event.target) other.value = event.target.value;
+            });
+            const query = event.target.value.trim().toLowerCase();
+            document.querySelectorAll(".link-row").forEach((row) => {
+                row.hidden = query && !row.textContent.toLowerCase().includes(query);
+            });
+        }));
+
+        document.querySelectorAll(".copy-link").forEach((button) => {
+            button.addEventListener("click", async () => {
+                const url = button.closest(".link-row").querySelector("a").href;
+                await navigator.clipboard?.writeText(url);
+                const label = button.querySelector("span");
+                if (label) {
+                    label.textContent = "Copied";
+                    window.setTimeout(() => label.textContent = "Copy", 1200);
+                }
+            });
+        });
+
+        const menu = document.querySelector(".mobile-menu");
+        menu.addEventListener("click", () => {
+            const open = document.body.classList.toggle("nav-open");
+            menu.setAttribute("aria-expanded", String(open));
+        });
+    </script>
 </body>
 </html>
