@@ -159,6 +159,30 @@ a { color: inherit; text-decoration: none; }
     line-height: 1.2;
     letter-spacing: -.35px;
 }
+
+.form-error {
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    color: #991b1b;
+    background: #fef2f2;
+    font-size: 14px;
+}
+
+.empty-state {
+    display: grid;
+    place-items: center;
+    gap: 8px;
+    min-height: 220px;
+    color: #8a8f98;
+    text-align: center;
+}
+
+.empty-state svg {
+    width: 32px;
+    height: 32px;
+}
 .save-panel form { display: grid; gap: 21px; }
 .field { display: grid; gap: 9px; }
 .field > span, .visibility-field legend { font-size: 14px; font-weight: 600; }

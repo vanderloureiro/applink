@@ -44,41 +44,22 @@
     <main class="page-shell">
         <aside class="save-panel" aria-labelledby="save-title">
             <h1 id="save-title">Save a New Link</h1>
-            <form>
+            {{ if .Error }}<p class="form-error" role="alert">{{ .Error }}</p>{{ end }}
+            <form method="post" action="/links">
                 <label class="field">
                     <span>Title</span>
-                    <input type="text" placeholder="Enter a descriptive title">
+                    <input type="text" name="title" value="{{ .Form.Title }}" placeholder="Enter a descriptive title" maxlength="200" required>
                 </label>
 
                 <label class="field">
                     <span>Link</span>
-                    <textarea rows="4" placeholder="https://example.com/very/long/link/that&#10;you/want/to/save/for/later/reference&#10;and/come/back/to"></textarea>
+                    <input type="url" name="link" value="{{ .Form.URL }}" placeholder="https://example.com" maxlength="2000" required>
                 </label>
 
                 <label class="field">
                     <span>Description</span>
-                    <textarea rows="3" placeholder="Add a short description of this link..."></textarea>
+                    <textarea name="description" rows="3" placeholder="Add a short description of this link..." maxlength="2000">{{ .Form.Description }}</textarea>
                 </label>
-
-                <label class="field">
-                    <span>Tags</span>
-                    <input type="text" placeholder="e.g., productivity, design, tools">
-                    <small>Add tags separated by commas</small>
-                </label>
-
-                <fieldset class="visibility-field">
-                    <legend>Visibility</legend>
-                    <div class="visibility-options">
-                        <label>
-                            <input type="radio" name="visibility" value="public" checked>
-                            <span><i data-lucide="globe-2"></i> Public</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="visibility" value="private">
-                            <span><i data-lucide="lock"></i> Private</span>
-                        </label>
-                    </div>
-                </fieldset>
 
                 <button class="save-button" type="submit">
                     <i data-lucide="bookmark"></i>
@@ -98,111 +79,34 @@
             </div>
 
             <div class="list-toolbar">
-                <h2 id="links-title">12 links</h2>
+                <h2 id="links-title">{{ len .Links }} links</h2>
                 <button type="button">Sort by: <strong>Newest</strong> <i data-lucide="chevron-down"></i></button>
             </div>
 
             <div class="links-list">
-                <article class="link-row">
+                {{ range .Links }}
+                <article class="link-row" data-link-id="{{ .ID }}">
                     <span class="link-type public"><i data-lucide="globe-2"></i></span>
                     <div class="link-copy">
-                        <h3>MDN Web Docs</h3>
-                        <a href="https://developer.mozilla.org/en-US/docs/Web">https://developer.mozilla.org/en-US/docs/Web</a>
-                        <p>Resources for developers, by developers. Documentation for web technologies<br class="wide-only"> including HTML, CSS, JavaScript, and more.</p>
-                        <div class="tags"><span>documentation</span><span>web development</span><span>reference</span></div>
+                        <h3>{{ .Title }}</h3>
+                        <a href="{{ .URL }}" target="_blank" rel="noopener noreferrer">{{ .URL }}</a>
+                        {{ if .Description }}<p>{{ .Description }}</p>{{ end }}
+                        {{ if .CreatedAt }}<div class="tags"><span>{{ formatDate .CreatedAt }}</span></div>{{ end }}
                     </div>
                     <div class="row-side">
-                        <span class="status public"><i data-lucide="globe-2"></i> Public</span>
+                        <span class="status public"><i data-lucide="database"></i> Notion</span>
                         <div class="row-actions">
                             <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
-                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
-                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
                         </div>
                     </div>
                 </article>
-
-                <article class="link-row">
-                    <span class="link-type"><i data-lucide="lock"></i></span>
-                    <div class="link-copy">
-                        <h3>OpenAI API Documentation</h3>
-                        <a href="https://platform.openai.com/docs/introduction">https://platform.openai.com/docs/introduction</a>
-                        <p>Official documentation for the OpenAI API, including guides and references<br class="wide-only"> for models, endpoints, and best practices.</p>
-                        <div class="tags"><span>api</span><span>openai</span><span>documentation</span></div>
-                    </div>
-                    <div class="row-side">
-                        <span class="status"><i data-lucide="lock"></i> Private</span>
-                        <div class="row-actions">
-                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
-                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
-                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="link-row">
-                    <span class="link-type"><i data-lucide="lock"></i></span>
-                    <div class="link-copy">
-                        <h3>Product Roadmap – Q2 2024</h3>
-                        <a href="https://docs.google.com/spreadsheets/d/1A2b3C4d5EfG6Hi7j8Kl9mN0opQrsTuvWxYz12">https://docs.google.com/spreadsheets/d/1A2b3C4d5EfG6Hi7j8Kl9mN0opQrsTuvWxYz12...</a>
-                        <p>Quarterly product roadmap with initiatives, timelines, and owners.</p>
-                        <div class="tags"><span>product</span><span>roadmap</span><span>planning</span></div>
-                    </div>
-                    <div class="row-side">
-                        <span class="status"><i data-lucide="lock"></i> Private</span>
-                        <div class="row-actions">
-                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
-                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
-                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="link-row">
-                    <span class="link-type public"><i data-lucide="globe-2"></i></span>
-                    <div class="link-copy">
-                        <h3>How to Build a Design System</h3>
-                        <a href="https://www.smashingmagazine.com/2021/04/design-system-components/">https://www.smashingmagazine.com/2021/04/design-system-components/</a>
-                        <p>A practical guide to creating scalable design systems with reusable components.</p>
-                        <div class="tags"><span>design</span><span>ui/ux</span><span>design system</span></div>
-                    </div>
-                    <div class="row-side">
-                        <span class="status public"><i data-lucide="globe-2"></i> Public</span>
-                        <div class="row-actions">
-                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
-                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
-                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="link-row">
-                    <span class="link-type"><i data-lucide="lock"></i></span>
-                    <div class="link-copy">
-                        <h3>Personal Finances – 2024</h3>
-                        <a href="https://docs.google.com/spreadsheets/d/9XyZ8e7Fgh6I1JkL3MnOpQrStUvWxYz12A3b">https://docs.google.com/spreadsheets/d/9XyZ8e7Fgh6I1JkL3MnOpQrStUvWxYz12A3b...</a>
-                        <p>My budget, investments, and monthly expense tracking.</p>
-                        <div class="tags"><span>finance</span><span>budget</span><span>tracking</span></div>
-                    </div>
-                    <div class="row-side">
-                        <span class="status"><i data-lucide="lock"></i> Private</span>
-                        <div class="row-actions">
-                            <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
-                            <button type="button"><i data-lucide="pencil"></i> <span>Edit</span></button>
-                            <button type="button" aria-label="More options"><i data-lucide="ellipsis-vertical"></i></button>
-                        </div>
-                    </div>
-                </article>
+                {{ else }}
+                <div class="empty-state">
+                    <i data-lucide="link-2"></i>
+                    <p>No links saved yet.</p>
+                </div>
+                {{ end }}
             </div>
-
-            <nav class="pagination" aria-label="Pagination">
-                <button type="button"><i data-lucide="chevron-left"></i> Previous</button>
-                <button type="button" class="current">1</button>
-                <button type="button">2</button>
-                <button type="button">3</button>
-                <span>...</span>
-                <button type="button">5</button>
-                <button type="button" class="next">Next <i data-lucide="chevron-right"></i></button>
-            </nav>
         </section>
     </main>
 
