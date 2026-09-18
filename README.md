@@ -32,3 +32,17 @@ go run ./cmd/applink
 ```
 
 Depois, acesse `http://localhost:8080`.
+
+## Docker e Railway
+
+Para construir e executar localmente:
+
+```bash
+docker build -t applink .
+docker run --rm -p 8080:8080 \
+  -e NOTION_TOKEN="ntn_..." \
+  -e ADMIN_KEY="choose-a-strong-secret" \
+  applink
+```
+
+Na Railway, crie um serviço a partir deste repositório. O `Dockerfile` será detectado automaticamente. Configure `NOTION_TOKEN` e `ADMIN_KEY` nas variáveis do serviço; `NOTION_DATABASE_ID` continua opcional. A aplicação usa automaticamente a variável `PORT` injetada pela Railway.

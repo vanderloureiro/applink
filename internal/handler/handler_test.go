@@ -112,3 +112,21 @@ func TestCreateLinkRejectsInvalidAdminKey(t *testing.T) {
 		t.Fatal("admin key was rendered in the response")
 	}
 }
+
+func TestListenAddress(t *testing.T) {
+	t.Run("uses Railway port", func(t *testing.T) {
+		t.Setenv("ADDR", "")
+		t.Setenv("PORT", "3000")
+		if got := listenAddress(); got != ":3000" {
+			t.Fatalf("listenAddress() = %q", got)
+		}
+	})
+
+	t.Run("explicit address takes precedence", func(t *testing.T) {
+		t.Setenv("ADDR", "127.0.0.1:9090")
+		t.Setenv("PORT", "3000")
+		if got := listenAddress(); got != "127.0.0.1:9090" {
+			t.Fatalf("listenAddress() = %q", got)
+		}
+	})
+}

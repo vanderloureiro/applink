@@ -27,16 +27,11 @@
         </nav>
 
         <div class="header-actions">
-            <label class="header-search">
-                <span class="sr-only">Search saved links</span>
-                <i data-lucide="search"></i>
-                <input type="search" placeholder="Search your saved links...">
-            </label>
             <button class="icon-button" type="button" aria-label="Notifications">
                 <i data-lucide="bell"></i>
             </button>
             <button class="avatar" type="button" aria-label="Open profile menu">
-                <span aria-hidden="true">👩🏻</span>
+                <i data-lucide="user-round" aria-hidden="true"></i>
             </button>
         </div>
     </header>
@@ -122,16 +117,13 @@
     <script>
         lucide.createIcons({ attrs: { "stroke-width": 1.8 } });
 
-        const searches = document.querySelectorAll('input[type="search"]');
-        searches.forEach((search) => search.addEventListener("input", (event) => {
-            searches.forEach((other) => {
-                if (other !== event.target) other.value = event.target.value;
-            });
+        const search = document.querySelector('.content-search input[type="search"]');
+        search.addEventListener("input", (event) => {
             const query = event.target.value.trim().toLowerCase();
             document.querySelectorAll(".link-row").forEach((row) => {
                 row.hidden = query && !row.textContent.toLowerCase().includes(query);
             });
-        }));
+        });
 
         document.querySelectorAll(".copy-link").forEach((button) => {
             button.addEventListener("click", async () => {

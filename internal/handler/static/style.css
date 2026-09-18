@@ -93,26 +93,14 @@ a { color: inherit; text-decoration: none; }
     content: "";
 }
 .header-actions { display: flex; align-items: center; gap: 22px; }
-.header-search {
-    display: flex;
-    width: 321px;
-    height: 44px;
-    align-items: center;
-    gap: 12px;
-    border: 1px solid #d6dce2;
-    border-radius: 12px;
-    background: #fbfbfc;
-    padding: 0 14px;
-}
-.header-search svg { width: 20px; color: #657084; }
-.header-search input, .content-search input {
+.content-search input {
     min-width: 0;
     flex: 1;
     border: 0;
     outline: 0;
     background: transparent;
 }
-.header-search input::placeholder, .content-search input::placeholder, .field input::placeholder, .field textarea::placeholder { color: #7c8598; opacity: 1; }
+.content-search input::placeholder, .field input::placeholder, .field textarea::placeholder { color: #7c8598; opacity: 1; }
 .icon-button, .mobile-menu {
     display: grid;
     width: 38px;
@@ -129,12 +117,12 @@ a { color: inherit; text-decoration: none; }
     height: 45px;
     place-items: center;
     overflow: hidden;
-    border: 0;
+    border: 1px solid #bdd0ee;
     border-radius: 50%;
-    background: var(--blue-soft);
-    font-size: 31px;
-    line-height: 1;
+    background: transparent;
+    color: var(--blue-dark);
 }
+.avatar svg { width: 22px; height: 22px; }
 .mobile-menu { display: none; }
 
 .page-shell {
@@ -217,7 +205,7 @@ a { color: inherit; text-decoration: none; }
 .password-toggle:hover { background: var(--blue-soft); color: var(--blue-dark); }
 .password-toggle:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
 .password-toggle svg { width: 19px; height: 19px; }
-.field input:focus, .field textarea:focus, .header-search:focus-within, .content-search label:focus-within {
+.field input:focus, .field textarea:focus, .content-search label:focus-within {
     border-color: #7298d3;
     box-shadow: 0 0 0 3px rgba(11, 61, 145, .12);
 }
@@ -439,7 +427,6 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 1180px) {
     .site-header { grid-template-columns: 170px 1fr auto; }
-    .header-search { display: none; }
     .page-shell { grid-template-columns: 330px minmax(0, 1fr); padding: 22px; }
     .link-row { grid-template-columns: 46px minmax(0, 1fr) 245px; }
 }

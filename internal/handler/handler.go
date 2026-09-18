@@ -57,7 +57,7 @@ func Run() error {
 		return err
 	}
 
-	address := envOrDefault("ADDR", ":8080")
+	address := listenAddress()
 	log.Printf("starting applink on http://localhost%s", address)
 	return http.ListenAndServe(address, server.Routes())
 }
@@ -198,4 +198,14 @@ func envOrDefault(key, fallback string) string {
 		return value
 	}
 	return fallback
+}
+
+func listenAddress() string {
+	if address := strings.TrimSpace(os.Getenv("ADDR")); address != "" {
+		return address
+	}
+	if port := strings.TrimSpace(os.Getenv("PORT")); port != "" {
+		return ":" + strings.TrimPrefix(port, ":")
+	}
+	return ":8080"
 }
