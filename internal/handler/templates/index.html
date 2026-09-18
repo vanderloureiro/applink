@@ -61,6 +61,16 @@
                     <textarea name="description" rows="3" placeholder="Add a short description of this link..." maxlength="2000">{{ .Form.Description }}</textarea>
                 </label>
 
+                <div class="field">
+                    <label class="field-label" for="admin-key">Admin key</label>
+                    <span class="password-input">
+                        <input id="admin-key" type="password" name="admin_key" placeholder="Enter your admin key" autocomplete="current-password" required>
+                        <button class="password-toggle" type="button" aria-label="Show admin key" aria-controls="admin-key" aria-pressed="false">
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </span>
+                </div>
+
                 <button class="save-button" type="submit">
                     <i data-lucide="bookmark"></i>
                     Save Link
@@ -94,7 +104,6 @@
                         {{ if .CreatedAt }}<div class="tags"><span>{{ formatDate .CreatedAt }}</span></div>{{ end }}
                     </div>
                     <div class="row-side">
-                        <span class="status public"><i data-lucide="database"></i> Notion</span>
                         <div class="row-actions">
                             <button class="copy-link" type="button"><i data-lucide="copy"></i> <span>Copy</span></button>
                         </div>
@@ -134,6 +143,18 @@
                     window.setTimeout(() => label.textContent = "Copy", 1200);
                 }
             });
+        });
+
+        const passwordToggle = document.querySelector(".password-toggle");
+        const adminKeyInput = document.querySelector("#admin-key");
+        passwordToggle.addEventListener("click", () => {
+            const isVisible = adminKeyInput.type === "text";
+            adminKeyInput.type = isVisible ? "password" : "text";
+            passwordToggle.setAttribute("aria-label", isVisible ? "Show admin key" : "Hide admin key");
+            passwordToggle.setAttribute("aria-pressed", String(!isVisible));
+            passwordToggle.innerHTML = `<i data-lucide="${isVisible ? "eye" : "eye-off"}"></i>`;
+            lucide.createIcons({ attrs: { "stroke-width": 1.8 } });
+            adminKeyInput.focus();
         });
 
         const menu = document.querySelector(".mobile-menu");

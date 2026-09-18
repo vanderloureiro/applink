@@ -20,9 +20,10 @@ A aplicação usa o database `link` (`3a06ced1da908091bbc0e2e95fdd0d65`) e esper
 
 ```bash
 NOTION_TOKEN="ntn_..."
+ADMIN_KEY="choose-a-strong-secret"
 ```
 
-A aplicação carrega `.env` automaticamente. Variáveis já exportadas pelo shell têm precedência. `NOTION_DATABASE_ID` é opcional e permite apontar para outro database; `ADDR` também é opcional e usa `:8080` por padrão.
+A aplicação carrega `.env` automaticamente. Variáveis já exportadas pelo shell têm precedência. `ADMIN_KEY` é obrigatória e protege a criação de links; ela deve ser informada no formulário para salvar um novo link. `NOTION_DATABASE_ID` é opcional e permite apontar para outro database; `ADDR` também é opcional e usa `:8080` por padrão.
 
 ## Como executar
 

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"crypto/subtle"
 	"embed"
 	"fmt"
 	"html/template"
@@ -25,8 +26,9 @@ type LinkStore interface {
 }
 
 type Server struct {
-	store LinkStore
-	tpl   *template.Template
+	store    LinkStore
+	tpl      *template.Template
+	adminKey string
 }
 
 type pageData struct {
@@ -45,7 +47,12 @@ func Run() error {
 		return err
 	}
 
-	server, err := NewServer(client)
+	adminKey := os.Getenv("ADMIN_KEY")
+	if adminKey == "" {
+		return fmt.Errorf("ADMIN_KEY is required")
+	}
+
+	server, err := NewServer(client, adminKey)
 	if err != nil {
 		return err
 	}
@@ -88,7 +95,10 @@ func loadEnvFile(path string) error {
 	return nil
 }
 
-func NewServer(store LinkStore) (*Server, error) {
+func NewServer(store LinkStore, adminKey string) (*Server, error) {
+	if adminKey == "" {
+		return nil, fmt.Errorf("admin key is required")
+	}
 	tplFS, err := fs.Sub(content, "templates")
 	if err != nil {
 		return nil, err
@@ -104,7 +114,7 @@ func NewServer(store LinkStore) (*Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Server{store: store, tpl: tpl}, nil
+	return &Server{store: store, tpl: tpl, adminKey: adminKey}, nil
 }
 
 func (s *Server) Routes() http.Handler {
@@ -137,7 +147,7 @@ func (s *Server) home(w http.ResponseWriter, r *http.Request) {
 func (s *Server) createLink(w http.ResponseWriter, r *http.Request) {
 	r.Body = http.MaxBytesReader(w, r.Body, 64<<10)
 	if err := r.ParseForm(); err != nil {
-		s.renderCreateError(w, r, notion.NewLink{}, "Invalid form submission.")
+		s.renderCreateError(w, r, http.StatusBadRequest, notion.NewLink{}, "Invalid form submission.")
 		return
 	}
 
@@ -146,29 +156,33 @@ func (s *Server) createLink(w http.ResponseWriter, r *http.Request) {
 		URL:         strings.TrimSpace(r.FormValue("link")),
 		Description: strings.TrimSpace(r.FormValue("description")),
 	}
+	if subtle.ConstantTimeCompare([]byte(r.FormValue("admin_key")), []byte(s.adminKey)) != 1 {
+		s.renderCreateError(w, r, http.StatusUnauthorized, input, "Invalid admin key.")
+		return
+	}
 	if input.Title == "" || input.URL == "" {
-		s.renderCreateError(w, r, input, "Title and link are required.")
+		s.renderCreateError(w, r, http.StatusUnprocessableEntity, input, "Title and link are required.")
 		return
 	}
 	parsed, err := url.ParseRequestURI(input.URL)
 	if err != nil || (parsed.Scheme != "http" && parsed.Scheme != "https") || parsed.Host == "" {
-		s.renderCreateError(w, r, input, "Enter a valid http:// or https:// link.")
+		s.renderCreateError(w, r, http.StatusUnprocessableEntity, input, "Enter a valid http:// or https:// link.")
 		return
 	}
 	if err := s.store.CreateLink(r.Context(), input); err != nil {
 		log.Printf("create Notion link: %v", err)
-		s.renderCreateError(w, r, input, "Could not save the link to Notion. Try again.")
+		s.renderCreateError(w, r, http.StatusUnprocessableEntity, input, "Could not save the link to Notion. Try again.")
 		return
 	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-func (s *Server) renderCreateError(w http.ResponseWriter, r *http.Request, input notion.NewLink, message string) {
+func (s *Server) renderCreateError(w http.ResponseWriter, r *http.Request, status int, input notion.NewLink, message string) {
 	links, err := s.store.ListLinks(r.Context())
 	if err != nil {
 		log.Printf("list Notion links after form error: %v", err)
 	}
-	s.render(w, http.StatusUnprocessableEntity, pageData{Title: "applink", Links: links, Error: message, Form: input})
+	s.render(w, status, pageData{Title: "applink", Links: links, Error: message, Form: input})
 }
 
 func (s *Server) render(w http.ResponseWriter, status int, data pageData) {

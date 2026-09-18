@@ -11,6 +11,8 @@ import (
 	"github.com/vanderloureiro/applink/internal/notion"
 )
 
+const testAdminKey = "test-admin-key"
+
 type fakeStore struct {
 	links   []notion.Link
 	created []notion.NewLink
@@ -27,7 +29,7 @@ func (f *fakeStore) CreateLink(_ context.Context, link notion.NewLink) error {
 
 func TestHomeRendersStoredLinks(t *testing.T) {
 	store := &fakeStore{links: []notion.Link{{Title: "Go", URL: "https://go.dev", Description: "Docs"}}}
-	server, err := NewServer(store)
+	server, err := NewServer(store, testAdminKey)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -46,11 +48,11 @@ func TestHomeRendersStoredLinks(t *testing.T) {
 
 func TestCreateLink(t *testing.T) {
 	store := &fakeStore{}
-	server, err := NewServer(store)
+	server, err := NewServer(store, testAdminKey)
 	if err != nil {
 		t.Fatal(err)
 	}
-	form := url.Values{"title": {" Notion "}, "link": {"https://notion.so"}, "description": {" Workspace "}}
+	form := url.Values{"title": {" Notion "}, "link": {"https://notion.so"}, "description": {" Workspace "}, "admin_key": {testAdminKey}}
 	request := httptest.NewRequest(http.MethodPost, "/links", strings.NewReader(form.Encode()))
 	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	response := httptest.NewRecorder()
@@ -66,11 +68,11 @@ func TestCreateLink(t *testing.T) {
 
 func TestCreateLinkRejectsInvalidURL(t *testing.T) {
 	store := &fakeStore{}
-	server, err := NewServer(store)
+	server, err := NewServer(store, testAdminKey)
 	if err != nil {
 		t.Fatal(err)
 	}
-	form := url.Values{"title": {"Bad"}, "link": {"javascript:alert(1)"}}
+	form := url.Values{"title": {"Bad"}, "link": {"javascript:alert(1)"}, "admin_key": {testAdminKey}}
 	request := httptest.NewRequest(http.MethodPost, "/links", strings.NewReader(form.Encode()))
 	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	response := httptest.NewRecorder()
@@ -81,5 +83,32 @@ func TestCreateLinkRejectsInvalidURL(t *testing.T) {
 	}
 	if len(store.created) != 0 {
 		t.Fatal("invalid link was created")
+	}
+}
+
+func TestCreateLinkRejectsInvalidAdminKey(t *testing.T) {
+	store := &fakeStore{}
+	server, err := NewServer(store, testAdminKey)
+	if err != nil {
+		t.Fatal(err)
+	}
+	form := url.Values{
+		"title":     {"Private"},
+		"link":      {"https://example.com"},
+		"admin_key": {"wrong-key"},
+	}
+	request := httptest.NewRequest(http.MethodPost, "/links", strings.NewReader(form.Encode()))
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	response := httptest.NewRecorder()
+
+	server.Routes().ServeHTTP(response, request)
+	if response.Code != http.StatusUnauthorized {
+		t.Fatalf("status = %d, body = %s", response.Code, response.Body.String())
+	}
+	if len(store.created) != 0 {
+		t.Fatal("link was created with an invalid admin key")
+	}
+	if strings.Contains(response.Body.String(), "wrong-key") {
+		t.Fatal("admin key was rendered in the response")
 	}
 }
